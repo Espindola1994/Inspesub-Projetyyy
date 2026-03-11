@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>INSPESUB Portal - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: { primary: "#00579e", accent: "#f97316" },
+        fontFamily: { display: ["Inter"] },
+        borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+      },
+    },
+  };
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .bg-mesh {
+    background-color: #f5f7f8;
+    background-image: radial-gradient(at 0% 0%, rgba(0,87,158,0.05) 0, transparent 50%),
+                      radial-gradient(at 100% 100%, rgba(0,87,158,0.1) 0, transparent 50%);
+  }
+  .view { display: none; }
+  .view.active { display: flex; flex-direction: column; gap: 1.5rem; }
+  .lang-dropdown { display: none; }
+  .lang-dropdown.open { display: block; }
+  input[type=password]:not(:placeholder-shown) { letter-spacing: 0.25em; }
+  html { font-size: 15.5px; }
+</style>
+</head>
+<body class="bg-[#f5f7f8] font-display min-h-screen flex items-center justify-center p-4 bg-mesh">
+
+<div class="w-full max-w-[460px] bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
+
+  <!-- Header image -->
+  <div class="h-52 bg-slate-100 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/65 to-transparent z-10"></div>
+    <div class="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover"
+      style='background-image: url("https://images.pexels.com/photos/932069/pexels-photo-932069.jpeg?auto=compress&cs=tinysrgb&w=900");'>
+    </div>
+    <div class="absolute bottom-6 left-8 z-20">
+      <h1 class="text-white text-3xl font-black tracking-tight">INSPESUB</h1>
+      <p class="text-slate-200 text-sm font-medium uppercase tracking-widest" id="h-subtitle">Acesso ao Portal</p>
+    </div>
+    <!-- Language switcher -->
+    <div class="absolute top-4 right-4 z-30">
+      <button onclick="toggleLangMenu()" class="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1.5 rounded-lg transition-colors">
+        <span class="material-symbols-outlined text-base">language</span>
+        <span id="lang-label">PT</span>
+        <span class="material-symbols-outlined text-sm">expand_more</span>
+      </button>
+      <div id="lang-menu" class="lang-dropdown absolute right-0 mt-1 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden w-36 text-sm">
+        <button onclick="setLang('pt')" data-lang="pt" class="lang-opt w-full flex items-center gap-2 px-3 py-2.5 hover:bg-slate-50 text-slate-700 font-medium transition-colors">
+          <span class="text-base">🇧🇷</span> Português
+        </button>
+        <button onclick="setLang('en')" data-lang="en" class="lang-opt w-full flex items-center gap-2 px-3 py-2.5 hover:bg-slate-50 text-slate-700 font-medium transition-colors">
+          <span class="text-base">🇺🇸</span> English
+        </button>
+        <button onclick="setLang('es')" data-lang="es" class="lang-opt w-full flex items-center gap-2 px-3 py-2.5 hover:bg-slate-50 text-slate-700 font-medium transition-colors">
+          <span class="text-base">🇪🇸</span> Español
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card body -->
+  <div class="px-8 pt-8 pb-6 md:px-10">
+
+    <!-- ===== VIEW: LOGIN ===== -->
+    <div id="view-login" class="view active">
+      <div>
+        <h2 class="text-slate-900 text-xl font-bold" id="t-welcome">Bem-vindo de volta</h2>
+        <p class="text-slate-500 text-sm mt-1" id="t-subtitle">Digite suas credenciais corporativas para continuar.</p>
+      </div>
+      <!-- Error banner -->
+      <div id="login-error" class="hidden items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold px-4 py-3 rounded-lg">
+        <span class="material-symbols-outlined text-base shrink-0">error</span>
+        <span id="login-error-msg"></span>
+      </div>
+      <form onsubmit="handleLogin(event)" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-slate-700 text-sm font-semibold flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">mail</span>
+            <span id="t-email">Endereço de E-mail</span>
+          </label>
+          <input id="login-email" type="email" placeholder="nome@empresa.com" autocomplete="email"
+            class="w-full rounded-lg border-slate-300 bg-white text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all h-12 px-4 text-sm"/>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <div class="flex justify-between items-center">
+            <label class="text-slate-700 text-sm font-semibold flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">lock</span>
+              <span id="t-password">Senha</span>
+            </label>
+            <button type="button" onclick="showView('forgot')" class="text-primary text-xs font-semibold hover:underline" id="t-forgot">Esqueceu a senha?</button>
+          </div>
+          <div class="relative">
+            <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password"
+              class="w-full rounded-lg border-slate-300 bg-white text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all h-12 px-4 pr-12 text-sm"/>
+            <button type="button" onclick="togglePw('login-password',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <span class="material-symbols-outlined text-xl">visibility</span>
+            </button>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <input class="w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer" id="remember" type="checkbox"/>
+          <label class="text-slate-600 text-sm cursor-pointer select-none" for="remember" id="t-remember">Lembrar este dispositivo</label>
+        </div>
+        <button type="submit" id="login-btn"
+          class="w-full bg-accent hover:bg-orange-600 text-white font-bold py-3.5 rounded-lg shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
+          <span id="t-enter">Entrar no Portal</span>
+          <span class="material-symbols-outlined" id="login-btn-icon">login</span>
+        </button>
+      </form>
+      <div class="relative py-1">
+        <div class="absolute inset-0 flex items-center"><span class="w-full border-t border-slate-200"></span></div>
+        <div class="relative flex justify-center text-[10px] uppercase">
+          <span class="bg-white px-3 text-slate-400 font-bold tracking-widest" id="t-authorized">Apenas pessoal autorizado</span>
+        </div>
+      </div>
+      <p class="text-center text-slate-600 text-sm">
+        <span id="t-new">Novo no portal?</span>
+        <button onclick="showView('register')" class="text-primary font-bold hover:underline ml-1" id="t-create">Criar Conta</button>
+      </p>
+    </div>
+
+    <!-- ===== VIEW: FORGOT PASSWORD ===== -->
+    <div id="view-forgot" class="view">
+      <div>
+        <button onclick="showView('login')" class="flex items-center gap-1 text-slate-400 hover:text-slate-600 text-xs font-bold mb-3 transition-colors">
+          <span class="material-symbols-outlined text-base">arrow_back</span>
+          <span id="t-back">Voltar ao login</span>
+        </button>
+        <h2 class="text-slate-900 text-xl font-bold" id="t-forgot-title">Recuperar Senha</h2>
+        <p class="text-slate-500 text-sm mt-1" id="t-forgot-sub">Informe seu e-mail corporativo para receber o link de redefinição.</p>
+      </div>
+      <!-- Success state (hidden initially) -->
+      <div id="forgot-success" class="hidden flex-col items-center gap-3 py-4 text-center">
+        <div class="size-14 rounded-full bg-green-100 flex items-center justify-center">
+          <span class="material-symbols-outlined text-green-600 text-3xl">mark_email_read</span>
+        </div>
+        <div>
+          <p class="font-bold text-slate-900 text-sm" id="t-forgot-sent">E-mail enviado!</p>
+          <p class="text-slate-500 text-xs mt-1" id="t-forgot-check">Verifique sua caixa de entrada e siga as instruções para redefinir sua senha.</p>
+        </div>
+        <button onclick="showView('login')" class="mt-2 px-5 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors" id="t-back-login">Voltar ao Login</button>
+      </div>
+      <!-- Form -->
+      <form id="forgot-form" onsubmit="handleForgot(event)" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-slate-700 text-sm font-semibold flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">mail</span>
+            <span id="t-email2">Endereço de E-mail</span>
+          </label>
+          <input id="forgot-email" type="email" placeholder="nome@empresa.com"
+            class="w-full rounded-lg border-slate-300 bg-white text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all h-12 px-4 text-sm"/>
+        </div>
+        <button type="submit"
+          class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 rounded-lg transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
+          <span id="t-send-link">Enviar Link de Recuperação</span>
+          <span class="material-symbols-outlined">send</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- ===== VIEW: CREATE ACCOUNT ===== -->
+    <div id="view-register" class="view">
+      <div>
+        <button onclick="showView('login')" class="flex items-center gap-1 text-slate-400 hover:text-slate-600 text-xs font-bold mb-3 transition-colors">
+          <span class="material-symbols-outlined text-base">arrow_back</span>
+          <span id="t-back2">Voltar ao login</span>
+        </button>
+        <h2 class="text-slate-900 text-xl font-bold" id="t-register-title">Criar Conta</h2>
+        <p class="text-slate-500 text-sm mt-1" id="t-register-sub">Preencha os dados abaixo. Um administrador validará seu acesso.</p>
+      </div>
+      <!-- Success state -->
+      <div id="register-success" class="hidden flex-col items-center gap-3 py-4 text-center">
+        <div class="size-14 rounded-full bg-primary/10 flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary text-3xl">how_to_reg</span>
+        </div>
+        <div>
+          <p class="font-bold text-slate-900 text-sm" id="t-reg-sent">Solicitação enviada!</p>
+          <p class="text-slate-500 text-xs mt-1" id="t-reg-check">Seu cadastro está em análise. Você receberá um e-mail de confirmação em até 24 horas.</p>
+        </div>
+        <button onclick="showView('login')" class="mt-2 px-5 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors" id="t-back-login2">Voltar ao Login</button>
+      </div>
+      <!-- Error -->
+      <div id="reg-error" class="hidden items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold px-4 py-3 rounded-lg">
+        <span class="material-symbols-outlined text-base shrink-0">error</span>
+        <span id="reg-error-msg"></span>
+      </div>
+      <!-- Form -->
+      <form id="register-form" onsubmit="handleRegister(event)" class="flex flex-col gap-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="flex flex-col gap-1.5">
+            <label class="text-slate-700 text-xs font-bold uppercase tracking-wide" id="t-name">Nome Completo</label>
+            <input id="reg-name" type="text" placeholder="João Silva"
+              class="w-full rounded-lg border-slate-300 bg-white text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 h-11 px-3 text-sm"/>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-slate-700 text-xs font-bold uppercase tracking-wide" id="t-empid">ID do Colaborador</label>
+            <input id="reg-empid" type="text" placeholder="EMP-0000"
+              class="w-full rounded-lg border-slate-300 bg-white text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 h-11 px-3 text-sm"/>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-slate-700 text-xs font-bold uppercase tracking-wide" id="t-email3">E-mail Corporativo</label>
+          <input id="reg-email" type="email" placeholder="nome@empresa.com"
+            class="w-full rounded-lg border-slate-300 bg-white text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 h-11 px-3 text-sm"/>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-slate-700 text-xs font-bold uppercase tracking-wide" id="t-dept">Departamento</label>
+          <select id="reg-dept"
+            class="w-full rounded-lg border-slate-300 bg-white text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 h-11 px-3 text-sm">
+            <option value="" id="t-dept-select">Selecione...</option>
+            <option>Subsea Inspection</option>
+            <option>ROV Operations</option>
+            <option>Safety & Compliance</option>
+            <option>Data & Reporting</option>
+            <option>Engineering</option>
+            <option>HR</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-slate-700 text-xs font-bold uppercase tracking-wide" id="t-newpw">Senha</label>
+          <div class="relative">
+            <input id="reg-password" type="password" placeholder="Mínimo 8 caracteres"
+              oninput="checkRegStrength(this.value)"
+              class="w-full rounded-lg border-slate-300 bg-white text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 h-11 px-3 pr-12 text-sm"/>
+            <button type="button" onclick="togglePw('reg-password',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <span class="material-symbols-outlined text-xl">visibility</span>
+            </button>
+          </div>
+          <div id="reg-strength" class="hidden gap-1.5 mt-0.5">
+            <div class="flex gap-1">
+              <div class="h-1 flex-1 rounded-full bg-slate-200" id="rs1"></div>
+              <div class="h-1 flex-1 rounded-full bg-slate-200" id="rs2"></div>
+              <div class="h-1 flex-1 rounded-full bg-slate-200" id="rs3"></div>
+              <div class="h-1 flex-1 rounded-full bg-slate-200" id="rs4"></div>
+            </div>
+            <p class="text-[10px] text-slate-400" id="reg-strength-label"></p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-slate-700 text-xs font-bold uppercase tracking-wide" id="t-confirmpw">Confirmar Senha</label>
+          <input id="reg-confirm" type="password" placeholder="Repita a senha"
+            class="w-full rounded-lg border-slate-300 bg-white text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 h-11 px-3 text-sm"/>
+        </div>
+        <button type="submit"
+          class="w-full bg-accent hover:bg-orange-600 text-white font-bold py-3.5 rounded-lg shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
+          <span id="t-submit-reg">Solicitar Acesso</span>
+          <span class="material-symbols-outlined">person_add</span>
+        </button>
+      </form>
+    </div>
+
+  </div><!-- /card body -->
+
+  <!-- Footer -->
+  <div class="bg-slate-50 px-8 py-4 flex justify-between items-center border-t border-slate-100">
+    <span class="text-[10px] text-slate-400 uppercase tracking-widest font-medium">© 2024 INSPESUB Global</span>
+    <div class="flex gap-3">
+      <span class="material-symbols-outlined text-slate-400 text-base cursor-help" title="Ajuda">help</span>
+      <span class="material-symbols-outlined text-slate-400 text-base cursor-pointer" title="Privacidade">verified_user</span>
+    </div>
+  </div>
+
+</div><!-- /card -->
+
+<script>
+  // ─── Language ───────────────────────────────────────────────
+  const langs = {
+    pt: {
+      'h-subtitle': 'Acesso ao Portal',
+      't-welcome': 'Bem-vindo de volta',
+      't-subtitle': 'Digite suas credenciais corporativas para continuar.',
+      't-email': 'Endereço de E-mail', 't-email2': 'Endereço de E-mail', 't-email3': 'E-mail Corporativo',
+      't-password': 'Senha', 't-newpw': 'Senha',
+      't-forgot': 'Esqueceu a senha?',
+      't-remember': 'Lembrar este dispositivo',
+      't-enter': 'Entrar no Portal',
+      't-authorized': 'Apenas pessoal autorizado',
+      't-new': 'Novo no portal?', 't-create': 'Criar Conta',
+      't-back': 'Voltar ao login', 't-back2': 'Voltar ao login',
+      't-forgot-title': 'Recuperar Senha',
+      't-forgot-sub': 'Informe seu e-mail corporativo para receber o link de redefinição.',
+      't-forgot-sent': 'E-mail enviado!',
+      't-forgot-check': 'Verifique sua caixa de entrada e siga as instruções para redefinir sua senha.',
+      't-back-login': 'Voltar ao Login', 't-back-login2': 'Voltar ao Login',
+      't-send-link': 'Enviar Link de Recuperação',
+      't-register-title': 'Criar Conta',
+      't-register-sub': 'Preencha os dados abaixo. Um administrador validará seu acesso.',
+      't-reg-sent': 'Solicitação enviada!',
+      't-reg-check': 'Seu cadastro está em análise. Você receberá um e-mail de confirmação em até 24 horas.',
+      't-name': 'Nome Completo', 't-empid': 'ID do Colaborador',
+      't-dept': 'Departamento', 't-dept-select': 'Selecione...',
+      't-confirmpw': 'Confirmar Senha',
+      't-submit-reg': 'Solicitar Acesso',
+      'login-email-ph': 'nome@empresa.com', 'forgot-email-ph': 'nome@empresa.com',
+      'reg-name-ph': 'João Silva', 'reg-empid-ph': 'EMP-0000', 'reg-email-ph': 'nome@empresa.com', 'reg-pw-ph': 'Mínimo 8 caracteres', 'reg-confirm-ph': 'Repita a senha',
+      'err-email': 'Informe um e-mail válido.', 'err-pw': 'Senha deve ter pelo menos 8 caracteres.',
+      'err-mismatch': 'As senhas não coincidem.', 'err-required': 'Preencha todos os campos.',
+      'err-login': 'Credenciais inválidas. Tente novamente.',
+      'strength-weak': 'Fraca', 'strength-fair': 'Razoável', 'strength-good': 'Boa', 'strength-strong': 'Forte',
+    },
+    en: {
+      'h-subtitle': 'Portal Access',
+      't-welcome': 'Welcome back',
+      't-subtitle': 'Please enter your corporate credentials to continue.',
+      't-email': 'Email Address', 't-email2': 'Email Address', 't-email3': 'Corporate Email',
+      't-password': 'Password', 't-newpw': 'Password',
+      't-forgot': 'Forgot password?',
+      't-remember': 'Remember this device',
+      't-enter': 'Enter Portal',
+      't-authorized': 'Authorized Personnel Only',
+      't-new': 'New to the portal?', 't-create': 'Create Account',
+      't-back': 'Back to login', 't-back2': 'Back to login',
+      't-forgot-title': 'Reset Password',
+      't-forgot-sub': 'Enter your corporate email to receive a reset link.',
+      't-forgot-sent': 'Email sent!',
+      't-forgot-check': 'Check your inbox and follow the instructions to reset your password.',
+      't-back-login': 'Back to Login', 't-back-login2': 'Back to Login',
+      't-send-link': 'Send Reset Link',
+      't-register-title': 'Create Account',
+      't-register-sub': 'Fill in the details below. An admin will verify your access.',
+      't-reg-sent': 'Request submitted!',
+      't-reg-check': 'Your registration is under review. You will receive a confirmation email within 24 hours.',
+      't-name': 'Full Name', 't-empid': 'Employee ID',
+      't-dept': 'Department', 't-dept-select': 'Select...',
+      't-confirmpw': 'Confirm Password',
+      't-submit-reg': 'Request Access',
+      'login-email-ph': 'name@company.com', 'forgot-email-ph': 'name@company.com',
+      'reg-name-ph': 'John Smith', 'reg-empid-ph': 'EMP-0000', 'reg-email-ph': 'name@company.com', 'reg-pw-ph': 'Minimum 8 characters', 'reg-confirm-ph': 'Repeat password',
+      'err-email': 'Please enter a valid email.', 'err-pw': 'Password must be at least 8 characters.',
+      'err-mismatch': 'Passwords do not match.', 'err-required': 'Please fill in all fields.',
+      'err-login': 'Invalid credentials. Please try again.',
+      'strength-weak': 'Weak', 'strength-fair': 'Fair', 'strength-good': 'Good', 'strength-strong': 'Strong',
+    },
+    es: {
+      'h-subtitle': 'Acceso al Portal',
+      't-welcome': 'Bienvenido de nuevo',
+      't-subtitle': 'Ingresa tus credenciales corporativas para continuar.',
+      't-email': 'Correo Electrónico', 't-email2': 'Correo Electrónico', 't-email3': 'Correo Corporativo',
+      't-password': 'Contraseña', 't-newpw': 'Contraseña',
+      't-forgot': '¿Olvidaste tu contraseña?',
+      't-remember': 'Recordar este dispositivo',
+      't-enter': 'Entrar al Portal',
+      't-authorized': 'Solo Personal Autorizado',
+      't-new': '¿Nuevo en el portal?', 't-create': 'Crear Cuenta',
+      't-back': 'Volver al inicio', 't-back2': 'Volver al inicio',
+      't-forgot-title': 'Recuperar Contraseña',
+      't-forgot-sub': 'Ingresa tu correo corporativo para recibir el enlace de restablecimiento.',
+      't-forgot-sent': '¡Correo enviado!',
+      't-forgot-check': 'Revisa tu bandeja de entrada y sigue las instrucciones para restablecer tu contraseña.',
+      't-back-login': 'Volver al Inicio', 't-back-login2': 'Volver al Inicio',
+      't-send-link': 'Enviar Enlace de Recuperación',
+      't-register-title': 'Crear Cuenta',
+      't-register-sub': 'Completa los datos. Un administrador validará tu acceso.',
+      't-reg-sent': '¡Solicitud enviada!',
+      't-reg-check': 'Tu registro está en revisión. Recibirás un correo de confirmación en 24 horas.',
+      't-name': 'Nombre Completo', 't-empid': 'ID de Empleado',
+      't-dept': 'Departamento', 't-dept-select': 'Selecciona...',
+      't-confirmpw': 'Confirmar Contraseña',
+      't-submit-reg': 'Solicitar Acceso',
+      'login-email-ph': 'nombre@empresa.com', 'forgot-email-ph': 'nombre@empresa.com',
+      'reg-name-ph': 'Juan García', 'reg-empid-ph': 'EMP-0000', 'reg-email-ph': 'nombre@empresa.com', 'reg-pw-ph': 'Mínimo 8 caracteres', 'reg-confirm-ph': 'Repite la contraseña',
+      'err-email': 'Ingresa un correo válido.', 'err-pw': 'La contraseña debe tener al menos 8 caracteres.',
+      'err-mismatch': 'Las contraseñas no coinciden.', 'err-required': 'Completa todos los campos.',
+      'err-login': 'Credenciales inválidas. Intenta de nuevo.',
+      'strength-weak': 'Débil', 'strength-fair': 'Regular', 'strength-good': 'Buena', 'strength-strong': 'Fuerte',
+    },
+  };
+  let currentLang = 'pt';
+
+  function setLang(code) {
+    currentLang = code;
+    const t = langs[code];
+    document.getElementById('lang-label').textContent = code.toUpperCase();
+    // text nodes
+    ['h-subtitle','t-welcome','t-subtitle','t-email','t-email2','t-email3','t-password','t-newpw',
+     't-forgot','t-remember','t-enter','t-authorized','t-new','t-create','t-back','t-back2',
+     't-forgot-title','t-forgot-sub','t-forgot-sent','t-forgot-check','t-back-login','t-back-login2',
+     't-send-link','t-register-title','t-register-sub','t-reg-sent','t-reg-check',
+     't-name','t-empid','t-dept','t-dept-select','t-confirmpw','t-submit-reg'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && t[id]) el.textContent = t[id];
+    });
+    // placeholders
+    const phs = {
+      'login-email': t['login-email-ph'], 'forgot-email': t['forgot-email-ph'],
+      'reg-name': t['reg-name-ph'], 'reg-empid': t['reg-empid-ph'],
+      'reg-email': t['reg-email-ph'], 'reg-password': t['reg-pw-ph'], 'reg-confirm': t['reg-confirm-ph'],
+    };
+    Object.entries(phs).forEach(([id, ph]) => {
+      const el = document.getElementById(id);
+      if (el) el.placeholder = ph;
+    });
+    // active lang highlight
+    document.querySelectorAll('.lang-opt').forEach(btn => {
+      btn.classList.toggle('bg-primary/10', btn.dataset.lang === code);
+      btn.classList.toggle('text-primary', btn.dataset.lang === code);
+      btn.classList.toggle('font-bold', btn.dataset.lang === code);
+    });
+    toggleLangMenu(false);
+  }
+
+  function toggleLangMenu(force) {
+    const menu = document.getElementById('lang-menu');
+    if (force === false) { menu.classList.remove('open'); return; }
+    menu.classList.toggle('open');
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#lang-menu') && !e.target.closest('button[onclick="toggleLangMenu()"]'))
+      document.getElementById('lang-menu').classList.remove('open');
+  });
+
+  // ─── View routing ────────────────────────────────────────────
+  function showView(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + id).classList.add('active');
+    // Reset sub-states
+    if (id === 'forgot') {
+      document.getElementById('forgot-success').classList.add('hidden');
+      document.getElementById('forgot-success').classList.remove('flex');
+      document.getElementById('forgot-form').classList.remove('hidden');
+    }
+    if (id === 'register') {
+      document.getElementById('register-success').classList.add('hidden');
+      document.getElementById('register-success').classList.remove('flex');
+      document.getElementById('register-form').classList.remove('hidden');
+      document.getElementById('reg-error').classList.add('hidden');
+      document.getElementById('reg-error').classList.remove('flex');
+    }
+    if (id === 'login') {
+      document.getElementById('login-error').classList.add('hidden');
+      document.getElementById('login-error').classList.remove('flex');
+    }
+  }
+
+  // ─── Password visibility toggle ──────────────────────────────
+  function togglePw(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon = btn.querySelector('span');
+    if (input.type === 'password') {
+      input.type = 'text'; icon.textContent = 'visibility_off';
+    } else {
+      input.type = 'password'; icon.textContent = 'visibility';
+    }
+  }
+
+  // ─── Password strength ───────────────────────────────────────
+  function checkRegStrength(val) {
+    const wrap = document.getElementById('reg-strength');
+    if (!val) { wrap.classList.add('hidden'); wrap.classList.remove('flex'); return; }
+    wrap.classList.remove('hidden'); wrap.classList.add('flex');
+    const bars = [document.getElementById('rs1'),document.getElementById('rs2'),document.getElementById('rs3'),document.getElementById('rs4')];
+    const label = document.getElementById('reg-strength-label');
+    const t = langs[currentLang];
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const colors = ['bg-red-400','bg-amber-400','bg-yellow-400','bg-green-500'];
+    const labels = [t['strength-weak'],t['strength-fair'],t['strength-good'],t['strength-strong']];
+    bars.forEach((b,i) => {
+      b.className = 'h-1 flex-1 rounded-full ' + (i < score ? colors[score-1] : 'bg-slate-200');
+    });
+    label.textContent = labels[score - 1] || '';
+  }
+
+  // ─── Login ───────────────────────────────────────────────────
+  function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const pw = document.getElementById('login-password').value;
+    const errEl = document.getElementById('login-error');
+    const errMsg = document.getElementById('login-error-msg');
+    const t = langs[currentLang];
+    if (!email || !pw) {
+      errMsg.textContent = t['err-required'];
+      errEl.classList.remove('hidden'); errEl.classList.add('flex'); return;
+    }
+    // Demo: accept any non-empty credentials
+    const btn = document.getElementById('login-btn');
+    const icon = document.getElementById('login-btn-icon');
+    btn.disabled = true;
+    btn.classList.add('opacity-70');
+    icon.textContent = 'hourglass_empty';
+    errEl.classList.add('hidden'); errEl.classList.remove('flex');
+    setTimeout(() => {
+      window.location.href = 'dashboard.html';
+    }, 900);
+  }
+
+  // ─── Forgot password ─────────────────────────────────────────
+  function handleForgot(e) {
+    e.preventDefault();
+    const email = document.getElementById('forgot-email').value.trim();
+    if (!email || !/\S+@\S+\.\S+/.test(email)) return;
+    document.getElementById('forgot-form').classList.add('hidden');
+    const succ = document.getElementById('forgot-success');
+    succ.classList.remove('hidden'); succ.classList.add('flex');
+  }
+
+  // ─── Register ────────────────────────────────────────────────
+  function handleRegister(e) {
+    e.preventDefault();
+    const t = langs[currentLang];
+    const name = document.getElementById('reg-name').value.trim();
+    const empid = document.getElementById('reg-empid').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const dept = document.getElementById('reg-dept').value;
+    const pw = document.getElementById('reg-password').value;
+    const confirm = document.getElementById('reg-confirm').value;
+    const errEl = document.getElementById('reg-error');
+    const errMsg = document.getElementById('reg-error-msg');
+
+    if (!name || !empid || !email || !dept || !pw || !confirm) {
+      errMsg.textContent = t['err-required'];
+      errEl.classList.remove('hidden'); errEl.classList.add('flex'); return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      errMsg.textContent = t['err-email'];
+      errEl.classList.remove('hidden'); errEl.classList.add('flex'); return;
+    }
+    if (pw.length < 8) {
+      errMsg.textContent = t['err-pw'];
+      errEl.classList.remove('hidden'); errEl.classList.add('flex'); return;
+    }
+    if (pw !== confirm) {
+      errMsg.textContent = t['err-mismatch'];
+      errEl.classList.remove('hidden'); errEl.classList.add('flex'); return;
+    }
+    errEl.classList.add('hidden'); errEl.classList.remove('flex');
+    document.getElementById('register-form').classList.add('hidden');
+    const succ = document.getElementById('register-success');
+    succ.classList.remove('hidden'); succ.classList.add('flex');
+  }
+
+  // Init: highlight PT
+  document.querySelector('.lang-opt[data-lang="pt"]').classList.add('bg-primary/10','text-primary','font-bold');
+</script>
+</body>
+</html>

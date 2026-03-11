@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \":*)",
+      "Bash(vercel --prod --yes)",
+      "Bash(vercel env add DIRECT_URL production --value \"postgresql://postgres:Porkito%402319@db.cvutlomgmxdwavaqchaq.supabase.co:5432/postgres\" --yes)",
+      "Bash(vercel env add NEXTAUTH_SECRET production --value \"XxRChqlubSiMYe6m3FCvURAEPcJhnKw8Eqosba1nSGM=\" --yes)",
+      "Bash(vercel env add NEXTAUTH_URL production --value \"https://inspesub-portal.vercel.app\" --yes)",
+      "Bash(vercel env add NEXT_PUBLIC_SUPABASE_URL production --value \"https://cvutlomgmxdwavaqchaq.supabase.co\" --yes)",
+      "Bash(vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production --value \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2dXRsb21nbXhkd2F2YXFjaGFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwOTk5OTYsImV4cCI6MjA4ODY3NTk5Nn0.Q6ydwknThP8cTwmwdy5vQrcDLboW3y9QbU7dRhM3FAE\" --yes)",
+      "Bash(vercel env add SUPABASE_SERVICE_ROLE_KEY production --value \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN2dXRsb21nbXhkd2F2YXFjaGFxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzA5OTk5NiwiZXhwIjoyMDg4Njc1OTk2fQ.mcGjtDRKFUfHH9utzk-aw3TLW_XYNH5ppvOBpc4lB0I\" --yes)",
+      "Bash(vercel env add NEXT_PUBLIC_APP_URL production --value \"https://inspesub-portal.vercel.app\" --yes)",
+      "Bash(vercel env add NEXT_PUBLIC_APP_NAME production --value \"INSPESUB Portal\" --yes)",
+      "Bash(vercel env ls production)",
+      "Bash(vercel logs https://inspesub-portal.vercel.app --output raw)",
+      "Bash(vercel inspect inspesub-portal-i1jnl1dd0-espindola1994s-projects.vercel.app --logs)",
+      "Bash(vercel env rm DATABASE_URL production --yes)",
+      "Bash(vercel env add DATABASE_URL production --value \"postgresql://postgres:Porkito%402319@db.cvutlomgmxdwavaqchaq.supabase.co:5432/postgres\" --yes)",
+      "Bash(vercel ls)",
+      "Bash(vercel logs inspesub-portal.vercel.app)",
+      "Bash(vercel env add DATABASE_URL production --value \"postgresql://postgres:Porkito%402319@db.cvutlomgmxdwavaqchaq.supabase.co:5432/postgres?sslmode=require\" --yes)",
+      "Bash(vercel env add DATABASE_URL production --value \"postgresql://postgres.cvutlomgmxdwavaqchaq:Porkito%402319@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1\" --yes)",
+      "Bash(vercel --prod)",
+      "Bash(curl -s \"https://inspesub-portal.vercel.app/api/health\")",
+      "Bash(npx prisma db push)",
+      "Bash(find \"c:\\\\Users\\\\Guilherme\\\\Documents\\\\Inspesub Prjetcty\\\\inspesub-portal\\\\src\\\\app\\\\\\(portal\\)\\\\contracheques\" -type f)",
+      "Bash(ls -la \"c:\\\\Users\\\\Guilherme\\\\Documents\\\\Inspesub Prjetcty\\\\inspesub-portal\\\\src\\\\app\\\\\\(portal\\)\")",
+      "Bash(xargs cat)",
+      "Bash(npx vercel --prod)"
+    ]
+  }
+}

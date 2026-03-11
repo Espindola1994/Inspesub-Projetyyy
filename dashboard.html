@@ -1,0 +1,2774 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>INSPESUB Portal - Member Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00579e",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1a23",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        html { font-size: 15.5px; }
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        /* Compensate fixed-px tiny labels for better readability */
+        [class*="text-[10px]"], [class*="text-[11px]"] { font-size: 0.7rem !important; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside class="w-64 bg-slate-50 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col fixed h-full z-10">
+<div class="p-6">
+<div class="flex items-center gap-3">
+<div class="bg-primary size-10 rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">shield_person</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-primary text-base font-bold leading-none">INSPESUB</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider mt-1">Portal</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1" id="sidebar-nav">
+<a onclick="navigateTo('dashboard')" data-nav="dashboard" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white font-medium cursor-pointer">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<span class="text-sm" data-i18n="nav.dashboard">Dashboard</span>
+</a>
+<a onclick="navigateTo('calendar')" data-nav="calendar" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors font-medium cursor-pointer">
+<span class="material-symbols-outlined text-xl">calendar_today</span>
+<span class="text-sm" data-i18n="nav.calendar">Calendar</span>
+</a>
+<a onclick="navigateTo('payslips')" data-nav="payslips" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors font-medium cursor-pointer">
+<span class="material-symbols-outlined text-xl">payments</span>
+<span class="text-sm" data-i18n="nav.payslips">Payslips</span>
+</a>
+<a onclick="navigateTo('myteam')" data-nav="myteam" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors font-medium cursor-pointer">
+<span class="material-symbols-outlined text-xl">group</span>
+<span class="text-sm" data-i18n="nav.myteam">My Team</span>
+</a>
+<a onclick="navigateTo('rdos')" data-nav="rdos" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors font-medium cursor-pointer">
+<span class="material-symbols-outlined text-xl">schedule</span>
+<span class="text-sm" data-i18n="nav.rdos">RDOs</span>
+</a>
+<a onclick="navigateTo('documents')" data-nav="documents" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors font-medium cursor-pointer">
+<span class="material-symbols-outlined text-xl">description</span>
+<span class="text-sm" data-i18n="nav.documents">Documents</span>
+</a>
+<a onclick="navigateTo('announcements')" data-nav="announcements" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors font-medium cursor-pointer">
+<span class="material-symbols-outlined text-xl">campaign</span>
+<span class="text-sm" data-i18n="nav.announcements">Announcements</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 px-2">
+<img class="size-9 rounded-full object-cover" data-alt="User profile photo of a smiling professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqbbozypj5oGCicHGAeb1pTyvel1L9Q3CiZ9WDQb_eplozJqmVTii8bfKLHusEyVXwWb-lwsUx_ZCWIsq85JE8cGe6ANILXArQPPM2FYnuq86tYl4OGiZusFO9W2mzjwlHV1klleBpL5SDxdFJXFLLOvG_7-R7v9q1yBZ2HN5BiESryOwwquDIKvDu8771oQVYYHQBsv5GoZa8-zySHKuAboH1xB3-_kzyS-cJVYM846vTy2eHh-VEjLVxiXey8Ew2IyEtbUw8zfw"/>
+<div class="flex flex-col min-w-0">
+<p class="text-sm font-semibold truncate">James Wilson</p>
+<p class="text-xs text-slate-500 truncate" data-i18n="sidebar.role">Sub-inspector</p>
+</div>
+<span onclick="signOut()" class="material-symbols-outlined text-slate-400 ml-auto cursor-pointer hover:text-red-500 transition-colors" title="Sign Out">logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-64 bg-white dark:bg-background-dark min-h-screen">
+<!-- Header -->
+<header class="h-16 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md z-20">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md" id="search-wrapper">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input id="global-search" data-i18n-placeholder="search.placeholder"
+  class="w-full bg-slate-50 dark:bg-slate-900 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 placeholder:text-slate-400"
+  placeholder="Buscar seções, documentos, pessoas, ações..."
+  type="text" autocomplete="off"
+  oninput="globalSearch(this.value)"
+  onkeydown="searchKeyNav(event)"
+  onfocus="if(this.value.trim()) globalSearch(this.value)"/>
+<!-- Search results dropdown -->
+<div id="search-dropdown" class="hidden absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden max-h-[420px] overflow-y-auto">
+  <div id="search-results-list"></div>
+  <div id="search-empty" class="hidden px-4 py-6 text-center text-sm text-slate-400">Nenhum resultado encontrado.</div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+
+<!-- Notifications -->
+<div class="relative" id="notif-wrapper">
+  <button id="notif-btn" onclick="toggleDropdown('notif-dropdown', 'notif-btn')" class="size-10 flex items-center justify-center rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 relative">
+    <span class="material-symbols-outlined">notifications</span>
+    <span id="notif-badge" class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+  </button>
+  <div id="notif-dropdown" class="dropdown-panel hidden absolute right-0 mt-2 w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden">
+    <div class="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-800">
+      <div class="flex items-center gap-2">
+        <h4 class="text-sm font-bold text-slate-900 dark:text-slate-100" data-i18n="notif.title">Notifications</h4>
+        <span id="notif-count-badge" class="text-[10px] font-bold bg-primary text-white px-1.5 py-0.5 rounded-full">2</span>
+      </div>
+      <button onclick="markAllRead()" class="text-xs text-primary font-semibold hover:underline" data-i18n="notif.markallread">Mark all as read</button>
+    </div>
+    <div id="notif-list" class="divide-y divide-slate-100 dark:divide-slate-800 max-h-72 overflow-y-auto">
+      <div class="notif-item group flex items-start gap-3 px-4 py-3 bg-blue-50/50 dark:bg-blue-900/10 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors" data-unread="true" onclick="readNotif(this, 'notif-detail-1')">
+        <div class="size-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary shrink-0 mt-0.5">
+          <span class="material-symbols-outlined text-sm">campaign</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-slate-900 dark:text-slate-100">System Maintenance Tonight</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">Portal offline from 22:00 to 02:00.</p>
+          <p class="text-[10px] text-slate-400 mt-1">2 hours ago</p>
+        </div>
+        <div class="flex flex-col items-end gap-1 shrink-0">
+          <span class="unread-dot size-2 bg-primary rounded-full mt-1.5"></span>
+          <button onclick="dismissNotif(event, this)" class="hidden group-hover:flex items-center justify-center size-5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 transition-colors">
+            <span class="material-symbols-outlined" style="font-size:14px">close</span>
+          </button>
+        </div>
+      </div>
+      <div class="notif-item group flex items-start gap-3 px-4 py-3 bg-blue-50/50 dark:bg-blue-900/10 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors" data-unread="true" onclick="readNotif(this, 'notif-detail-2')">
+        <div class="size-8 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600 shrink-0 mt-0.5">
+          <span class="material-symbols-outlined text-sm">assignment_late</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-slate-900 dark:text-slate-100">Action Required: Operational Protocol v4.2</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">Please review and sign the document.</p>
+          <p class="text-[10px] text-slate-400 mt-1">Yesterday</p>
+        </div>
+        <div class="flex flex-col items-end gap-1 shrink-0">
+          <span class="unread-dot size-2 bg-primary rounded-full mt-1.5"></span>
+          <button onclick="dismissNotif(event, this)" class="hidden group-hover:flex items-center justify-center size-5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 transition-colors">
+            <span class="material-symbols-outlined" style="font-size:14px">close</span>
+          </button>
+        </div>
+      </div>
+      <div class="notif-item group flex items-start gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors" data-unread="false" onclick="readNotif(this, 'notif-detail-3')">
+        <div class="size-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600 shrink-0 mt-0.5">
+          <span class="material-symbols-outlined text-sm">event_available</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-slate-900 dark:text-slate-100">RDO Request Approved</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">Your personal leave for Oct 20 was approved.</p>
+          <p class="text-[10px] text-slate-400 mt-1">3 days ago</p>
+        </div>
+        <div class="flex flex-col items-end gap-1 shrink-0">
+          <button onclick="dismissNotif(event, this)" class="hidden group-hover:flex items-center justify-center size-5 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 transition-colors">
+            <span class="material-symbols-outlined" style="font-size:14px">close</span>
+          </button>
+        </div>
+      </div>
+      <div id="notif-empty" class="hidden px-4 py-8 text-center">
+        <span class="material-symbols-outlined text-3xl text-slate-300 dark:text-slate-600">notifications_off</span>
+        <p class="text-xs text-slate-400 mt-2" data-i18n="notif.empty">No notifications</p>
+      </div>
+    </div>
+    <div class="px-4 py-3 border-t border-slate-100 dark:border-slate-800">
+      <button onclick="closeAllDropdowns(); openModal('modal-all-notifs')" class="w-full text-xs font-semibold text-primary hover:underline" data-i18n="notif.viewall">View all notifications</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings -->
+<div class="relative" id="settings-wrapper">
+  <button id="settings-btn" onclick="toggleDropdown('settings-dropdown', 'settings-btn')" class="size-10 flex items-center justify-center rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">
+    <span class="material-symbols-outlined">settings</span>
+  </button>
+  <div id="settings-dropdown" class="dropdown-panel hidden absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden">
+    <div class="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
+      <h4 class="text-sm font-bold text-slate-900 dark:text-slate-100" data-i18n="settings.title">Settings</h4>
+    </div>
+    <div class="py-2">
+      <button id="dark-mode-btn" onclick="toggleDarkMode()" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+        <span class="material-symbols-outlined text-slate-400 text-xl">dark_mode</span>
+        <span data-i18n="settings.darkmode">Toggle Dark Mode</span>
+        <span id="dark-mode-indicator" class="ml-auto text-xs text-slate-400" data-i18n="darkmode.off">Off</span>
+      </button>
+      <button onclick="closeAllDropdowns(); openModal('modal-notif-prefs')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+        <span class="material-symbols-outlined text-slate-400 text-xl">notifications_active</span>
+        <span data-i18n="settings.notifprefs">Notification Preferences</span>
+      </button>
+      <button onclick="closeAllDropdowns(); openModal('modal-language')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+        <span class="material-symbols-outlined text-slate-400 text-xl">language</span>
+        <span data-i18n="settings.language">Language</span>
+        <span id="lang-indicator" class="ml-auto text-xs text-slate-400">EN</span>
+      </button>
+      <button onclick="closeAllDropdowns(); openModal('modal-security')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+        <span class="material-symbols-outlined text-slate-400 text-xl">security</span>
+        <span data-i18n="settings.security">Security & Privacy</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-800 mx-2"></div>
+
+<!-- User Profile -->
+<div class="relative" id="profile-wrapper">
+  <div id="profile-btn" onclick="toggleDropdown('profile-dropdown', 'profile-btn')" class="flex items-center gap-2 cursor-pointer group">
+    <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">JW</div>
+    <span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors">expand_more</span>
+  </div>
+  <div id="profile-dropdown" class="dropdown-panel hidden absolute right-0 mt-2 w-60 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden">
+    <div class="px-4 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3">
+      <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm shrink-0">JW</div>
+      <div class="min-w-0">
+        <p class="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">James Wilson</p>
+        <p class="text-xs text-slate-500 truncate" data-i18n="sidebar.role">Sub-inspector</p>
+      </div>
+    </div>
+    <div class="py-2">
+      <button onclick="closeAllDropdowns(); openModal('modal-profile')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+        <span class="material-symbols-outlined text-slate-400 text-xl">account_circle</span>
+        <span data-i18n="profile.myprofile">My Profile</span>
+      </button>
+      <button onclick="closeAllDropdowns(); scrollToDocuments()" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+        <span class="material-symbols-outlined text-slate-400 text-xl">badge</span>
+        <span data-i18n="profile.mydocs">My Documents</span>
+      </button>
+      <button onclick="closeAllDropdowns(); openModal('modal-payslips')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+        <span class="material-symbols-outlined text-slate-400 text-xl">payments</span>
+        <span data-i18n="nav.payslips">Payslips</span>
+      </button>
+      <button onclick="closeAllDropdowns(); openModal('modal-password')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+        <span class="material-symbols-outlined text-slate-400 text-xl">lock</span>
+        <span data-i18n="profile.changepw">Change Password</span>
+      </button>
+    </div>
+    <div class="py-2 border-t border-slate-100 dark:border-slate-800">
+      <button onclick="signOut()" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+        <span class="material-symbols-outlined text-red-500 text-xl">logout</span>
+        <span data-i18n="profile.signout">Sign Out</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+</div>
+</header>
+
+<script>
+  function toggleDropdown(id, btnId) {
+    const dropdown = document.getElementById(id);
+    const isHidden = dropdown.classList.contains('hidden');
+    // Close all dropdowns
+    document.querySelectorAll('.dropdown-panel').forEach(d => d.classList.add('hidden'));
+    if (isHidden) {
+      dropdown.classList.remove('hidden');
+    }
+  }
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    const wrappers = ['notif-wrapper', 'settings-wrapper', 'profile-wrapper'];
+    const clickedInside = wrappers.some(id => {
+      const el = document.getElementById(id);
+      return el && el.contains(e.target);
+    });
+    if (!clickedInside) {
+      document.querySelectorAll('.dropdown-panel').forEach(d => d.classList.add('hidden'));
+    }
+  });
+
+  function updateNotifCount() {
+    const unread = document.querySelectorAll('#notif-list .notif-item[data-unread="true"]').length;
+    const badge = document.getElementById('notif-badge');
+    const countBadge = document.getElementById('notif-count-badge');
+    if (unread === 0) {
+      badge.classList.add('hidden');
+      countBadge.classList.add('hidden');
+    } else {
+      badge.classList.remove('hidden');
+      countBadge.classList.remove('hidden');
+      countBadge.textContent = unread;
+    }
+    const items = document.querySelectorAll('#notif-list .notif-item');
+    document.getElementById('notif-empty').classList.toggle('hidden', items.length > 0);
+  }
+
+  function readNotif(item, detailId) {
+    if (item.dataset.unread === 'true') {
+      item.dataset.unread = 'false';
+      item.classList.remove('bg-blue-50/50', 'dark:bg-blue-900/10');
+      const dot = item.querySelector('.unread-dot');
+      if (dot) dot.remove();
+      updateNotifCount();
+    }
+    closeAllDropdowns();
+    openModal('modal-all-notifs');
+    showNotifDetail(detailId);
+  }
+
+  function dismissNotif(e, btn) {
+    e.stopPropagation();
+    const item = btn.closest('.notif-item');
+    item.style.transition = 'opacity 0.2s';
+    item.style.opacity = '0';
+    setTimeout(() => { item.remove(); updateNotifCount(); }, 200);
+  }
+
+  function markAllRead() {
+    document.querySelectorAll('#notif-list .notif-item[data-unread="true"]').forEach(item => {
+      item.dataset.unread = 'false';
+      item.classList.remove('bg-blue-50/50', 'dark:bg-blue-900/10');
+      const dot = item.querySelector('.unread-dot');
+      if (dot) dot.remove();
+    });
+    updateNotifCount();
+  }
+
+  function showNotifDetail(detailId) {
+    document.getElementById('modal-notif-list-view').classList.add('hidden');
+    document.querySelectorAll('.notif-detail').forEach(d => d.classList.add('hidden'));
+    document.getElementById(detailId).classList.remove('hidden');
+  }
+
+  function backToNotifList() {
+    document.querySelectorAll('.notif-detail').forEach(d => d.classList.add('hidden'));
+    document.getElementById('modal-notif-list-view').classList.remove('hidden');
+  }
+
+  function toggleDarkMode() {
+    document.documentElement.classList.toggle('dark');
+    const isDark = document.documentElement.classList.contains('dark');
+    const t = i18n[currentLang] || i18n['EN'];
+    document.getElementById('dark-mode-indicator').textContent = isDark ? t['darkmode.on'] : t['darkmode.off'];
+  }
+
+  function toggleSwitch(btn) {
+    const isOn = btn.dataset.on === 'true';
+    btn.dataset.on = (!isOn).toString();
+    const dot = btn.querySelector('span');
+    if (!isOn) {
+      btn.classList.remove('bg-slate-300', 'dark:bg-slate-600');
+      btn.classList.add('bg-primary');
+      dot.classList.add('translate-x-5');
+    } else {
+      btn.classList.add('bg-slate-300', 'dark:bg-slate-600');
+      btn.classList.remove('bg-primary');
+      dot.classList.remove('translate-x-5');
+    }
+  }
+
+  const _notifPrefIds = ['np-system','np-docs','np-rdo','np-payslip','np-hr'];
+  let _notifPrefSnapshot = {};
+
+  function _snapshotNotifPrefs() {
+    _notifPrefIds.forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) _notifPrefSnapshot[id] = btn.dataset.on;
+    });
+  }
+
+  function _applySwitchState(id, state) {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    const isOn = state === 'true';
+    btn.dataset.on = state;
+    const dot = btn.querySelector('span');
+    if (isOn) {
+      btn.classList.remove('bg-slate-300','dark:bg-slate-600');
+      btn.classList.add('bg-primary');
+      dot.classList.add('translate-x-5');
+    } else {
+      btn.classList.add('bg-slate-300','dark:bg-slate-600');
+      btn.classList.remove('bg-primary');
+      dot.classList.remove('translate-x-5');
+    }
+  }
+
+  function cancelNotifPrefs() {
+    _notifPrefIds.forEach(id => {
+      if (_notifPrefSnapshot[id] !== undefined) _applySwitchState(id, _notifPrefSnapshot[id]);
+    });
+    closeModal();
+  }
+
+  function saveNotifPrefs() {
+    const labels = {
+      'np-system': 'System Announcements',
+      'np-docs': 'Document Actions',
+      'np-rdo': 'RDO Updates',
+      'np-payslip': 'Payslip Available',
+      'np-hr': 'HR Announcements'
+    };
+    const on = _notifPrefIds.filter(id => document.getElementById(id)?.dataset.on === 'true').map(id => labels[id]);
+    showToast('Preferences saved: ' + (on.length ? on.join(', ') : 'all off'), 'notifications', 'text-blue-400');
+    closeModal();
+  }
+
+  const i18n = {
+    EN: {
+      'nav.dashboard':'Dashboard','nav.calendar':'Calendar','nav.payslips':'Payslips',
+      'nav.myteam':'My Team','nav.rdos':'RDOs','nav.documents':'Documents',
+      'nav.announcements':'Announcements','nav.profile':'Profile',
+      'sidebar.role':'Sub-inspector',
+      'search.placeholder':'Search for documents, tasks, or RDOs...',
+      'notif.title':'Notifications','notif.markallread':'Mark all as read',
+      'notif.viewall':'View all notifications','notif.empty':'No notifications',
+      'settings.title':'Settings','settings.darkmode':'Toggle Dark Mode',
+      'settings.notifprefs':'Notification Preferences','settings.language':'Language',
+      'settings.security':'Security & Privacy',
+      'profile.myprofile':'My Profile','profile.mydocs':'My Documents',
+      'profile.changepw':'Change Password','profile.signout':'Sign Out',
+      'darkmode.on':'On','darkmode.off':'Off',
+      'welcome':'Welcome back, James',
+      'opsstatus':"Here's your operational status for",
+      'card.attendance':'Attendance (Month)','card.pendingtasks':'Pending Tasks',
+      'card.payslip':'Latest Payslip','card.payslip.val':'Available',
+      'card.teamstatus':'Team Status','card.teamstatus.val':'On Track',
+      'docs.title':'Recent Documents & RDOs','docs.viewall':'View all',
+      'table.name':'Name','table.type':'Type','table.date':'Date','table.status':'Status',
+      'type.document':'Document','type.rdo':'RDO',
+      'status.signed':'Signed','status.approved':'Approved',
+      'status.actionreq':'Action Required','status.archived':'Archived',
+      'announcements.title':'Internal Announcements',
+      'badge.urgent':'Urgent','badge.general':'General','badge.hr':'HR','badge.new':'New',
+      'time.2hago':'2h ago','time.yesterday':'Yesterday','time.3dago':'3 days ago',
+      'ann1.title':'System Maintenance Notice',
+      'ann1.body':'The portal will be offline for scheduled security updates tonight from 22:00 to 02:00. Please save all pending reports.',
+      'ann1.cta':'Read More',
+      'ann2.title':'New Operational Guidelines Issued',
+      'ann2.body':'Updated protocols for field inspections have been uploaded to the Documents section. Compliance is required by next week.',
+      'ann2.cta':'View PDF',
+      'ann3.title':'Holiday Season RDO Applications',
+      'ann3.body':'Please submit your leave requests for the upcoming holiday period by November 1st for priority processing.',
+      'viewall.announcements':'View All Announcements',
+      'modal.language.title':'Language','modal.close':'Close',
+      'modal.notifprefs.title':'Notification Preferences',
+      'modal.notifprefs.subtitle':'Choose which notifications you want to receive.',
+      'notifpref.system':'System Announcements','notifpref.system.sub':'Maintenance, updates and outages',
+      'notifpref.docs':'Document Actions','notifpref.docs.sub':'Signature requests and document updates',
+      'notifpref.rdo':'RDO Updates','notifpref.rdo.sub':'Approvals, rejections and reminders',
+      'notifpref.payslip':'Payslip Available','notifpref.payslip.sub':'When a new payslip is issued',
+      'notifpref.hr':'HR Announcements','notifpref.hr.sub':'Leave policies and HR updates',
+      'btn.cancel':'Cancel','btn.saveprefs':'Save Preferences',
+    },
+    PT: {
+      'nav.dashboard':'Painel','nav.calendar':'Calendário','nav.payslips':'Holerites',
+      'nav.myteam':'Minha Equipe','nav.rdos':'RDOs','nav.documents':'Documentos',
+      'nav.announcements':'Avisos','nav.profile':'Perfil',
+      'sidebar.role':'Sub-inspetor',
+      'search.placeholder':'Pesquisar documentos, tarefas ou RDOs...',
+      'notif.title':'Notificações','notif.markallread':'Marcar todas como lidas',
+      'notif.viewall':'Ver todas as notificações','notif.empty':'Sem notificações',
+      'settings.title':'Configurações','settings.darkmode':'Modo Escuro',
+      'settings.notifprefs':'Preferências de Notificação','settings.language':'Idioma',
+      'settings.security':'Segurança e Privacidade',
+      'profile.myprofile':'Meu Perfil','profile.mydocs':'Meus Documentos',
+      'profile.changepw':'Alterar Senha','profile.signout':'Sair',
+      'darkmode.on':'Ligado','darkmode.off':'Desligado',
+      'welcome':'Bem-vindo de volta, James',
+      'opsstatus':'Aqui está o seu status operacional para',
+      'card.attendance':'Frequência (Mês)','card.pendingtasks':'Tarefas Pendentes',
+      'card.payslip':'Último Holerite','card.payslip.val':'Disponível',
+      'card.teamstatus':'Status da Equipe','card.teamstatus.val':'No Prazo',
+      'docs.title':'Documentos e RDOs Recentes','docs.viewall':'Ver todos',
+      'table.name':'Nome','table.type':'Tipo','table.date':'Data','table.status':'Status',
+      'type.document':'Documento','type.rdo':'RDO',
+      'status.signed':'Assinado','status.approved':'Aprovado',
+      'status.actionreq':'Ação Necessária','status.archived':'Arquivado',
+      'announcements.title':'Avisos Internos',
+      'badge.urgent':'Urgente','badge.general':'Geral','badge.hr':'RH','badge.new':'Novo',
+      'time.2hago':'Há 2h','time.yesterday':'Ontem','time.3dago':'Há 3 dias',
+      'ann1.title':'Aviso de Manutenção do Sistema',
+      'ann1.body':'O portal ficará offline para atualizações de segurança esta noite das 22:00 às 02:00. Salve todos os relatórios pendentes.',
+      'ann1.cta':'Leia Mais',
+      'ann2.title':'Novas Diretrizes Operacionais Emitidas',
+      'ann2.body':'Protocolos atualizados para inspeções de campo foram enviados à seção Documentos. Conformidade exigida até a próxima semana.',
+      'ann2.cta':'Ver PDF',
+      'ann3.title':'Solicitações de RDO para o Período de Férias',
+      'ann3.body':'Envie suas solicitações de licença para o próximo período de férias até 1º de novembro para processamento prioritário.',
+      'viewall.announcements':'Ver Todos os Avisos',
+      'modal.language.title':'Idioma','modal.close':'Fechar',
+      'modal.notifprefs.title':'Preferências de Notificação',
+      'modal.notifprefs.subtitle':'Escolha quais notificações você deseja receber.',
+      'notifpref.system':'Avisos do Sistema','notifpref.system.sub':'Manutenção, atualizações e interrupções',
+      'notifpref.docs':'Ações de Documentos','notifpref.docs.sub':'Solicitações de assinatura e atualizações',
+      'notifpref.rdo':'Atualizações de RDO','notifpref.rdo.sub':'Aprovações, rejeições e lembretes',
+      'notifpref.payslip':'Holerite Disponível','notifpref.payslip.sub':'Quando um novo holerite for emitido',
+      'notifpref.hr':'Avisos de RH','notifpref.hr.sub':'Políticas de licença e atualizações de RH',
+      'btn.cancel':'Cancelar','btn.saveprefs':'Salvar Preferências',
+    },
+    ES: {
+      'nav.dashboard':'Panel','nav.calendar':'Calendario','nav.payslips':'Nóminas',
+      'nav.myteam':'Mi Equipo','nav.rdos':'RDOs','nav.documents':'Documentos',
+      'nav.announcements':'Anuncios','nav.profile':'Perfil',
+      'sidebar.role':'Sub-inspector',
+      'search.placeholder':'Buscar documentos, tareas o RDOs...',
+      'notif.title':'Notificaciones','notif.markallread':'Marcar todo como leído',
+      'notif.viewall':'Ver todas las notificaciones','notif.empty':'Sin notificaciones',
+      'settings.title':'Configuración','settings.darkmode':'Modo Oscuro',
+      'settings.notifprefs':'Preferencias de Notificación','settings.language':'Idioma',
+      'settings.security':'Seguridad y Privacidad',
+      'profile.myprofile':'Mi Perfil','profile.mydocs':'Mis Documentos',
+      'profile.changepw':'Cambiar Contraseña','profile.signout':'Cerrar Sesión',
+      'darkmode.on':'Encendido','darkmode.off':'Apagado',
+      'welcome':'Bienvenido de nuevo, James',
+      'opsstatus':'Aquí está tu estado operativo para',
+      'card.attendance':'Asistencia (Mes)','card.pendingtasks':'Tareas Pendientes',
+      'card.payslip':'Última Nómina','card.payslip.val':'Disponible',
+      'card.teamstatus':'Estado del Equipo','card.teamstatus.val':'En Curso',
+      'docs.title':'Documentos y RDOs Recientes','docs.viewall':'Ver todos',
+      'table.name':'Nombre','table.type':'Tipo','table.date':'Fecha','table.status':'Estado',
+      'type.document':'Documento','type.rdo':'RDO',
+      'status.signed':'Firmado','status.approved':'Aprobado',
+      'status.actionreq':'Acción Requerida','status.archived':'Archivado',
+      'announcements.title':'Anuncios Internos',
+      'badge.urgent':'Urgente','badge.general':'General','badge.hr':'RRHH','badge.new':'Nuevo',
+      'time.2hago':'Hace 2h','time.yesterday':'Ayer','time.3dago':'Hace 3 días',
+      'ann1.title':'Aviso de Mantenimiento del Sistema',
+      'ann1.body':'El portal estará fuera de línea por actualizaciones de seguridad esta noche de 22:00 a 02:00. Guarde todos los informes pendientes.',
+      'ann1.cta':'Leer Más',
+      'ann2.title':'Nuevas Directrices Operativas Emitidas',
+      'ann2.body':'Los protocolos actualizados para inspecciones de campo han sido subidos a la sección de Documentos. El cumplimiento es obligatorio para la próxima semana.',
+      'ann2.cta':'Ver PDF',
+      'ann3.title':'Solicitudes de RDO para Temporada de Vacaciones',
+      'ann3.body':'Envíe sus solicitudes de permiso para el próximo período vacacional antes del 1 de noviembre para procesamiento prioritario.',
+      'viewall.announcements':'Ver Todos los Anuncios',
+      'modal.language.title':'Idioma','modal.close':'Cerrar',
+      'modal.notifprefs.title':'Preferencias de Notificación',
+      'modal.notifprefs.subtitle':'Elija qué notificaciones desea recibir.',
+      'notifpref.system':'Anuncios del Sistema','notifpref.system.sub':'Mantenimiento, actualizaciones e interrupciones',
+      'notifpref.docs':'Acciones de Documentos','notifpref.docs.sub':'Solicitudes de firma y actualizaciones de documentos',
+      'notifpref.rdo':'Actualizaciones de RDO','notifpref.rdo.sub':'Aprobaciones, rechazos y recordatorios',
+      'notifpref.payslip':'Nómina Disponible','notifpref.payslip.sub':'Cuando se emite una nueva nómina',
+      'notifpref.hr':'Anuncios de RRHH','notifpref.hr.sub':'Políticas de licencia y actualizaciones de RRHH',
+      'btn.cancel':'Cancelar','btn.saveprefs':'Guardar Preferencias',
+    }
+  };
+
+  let currentLang = 'EN';
+
+  function applyLang(code) {
+    const t = i18n[code];
+    if (!t) return;
+    currentLang = code;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (t[key] !== undefined) el.textContent = t[key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.dataset.i18nPlaceholder;
+      if (t[key] !== undefined) el.placeholder = t[key];
+    });
+    // Keep dark mode indicator in sync with lang
+    const isDark = document.documentElement.classList.contains('dark');
+    const dmi = document.getElementById('dark-mode-indicator');
+    if (dmi) dmi.textContent = isDark ? t['darkmode.on'] : t['darkmode.off'];
+  }
+
+  function selectLanguage(btn, code, name) {
+    document.querySelectorAll('.lang-option').forEach(el => {
+      el.classList.remove('bg-primary/5', 'border', 'border-primary/20');
+      el.classList.add('hover:bg-slate-50');
+      el.querySelector('.material-symbols-outlined').textContent = 'radio_button_unchecked';
+      el.querySelector('.material-symbols-outlined').classList.remove('text-primary');
+      el.querySelector('.material-symbols-outlined').classList.add('text-slate-300');
+    });
+    btn.classList.add('bg-primary/5', 'border', 'border-primary/20');
+    btn.classList.remove('hover:bg-slate-50');
+    const icon = btn.querySelector('.material-symbols-outlined');
+    icon.textContent = 'check_circle';
+    icon.classList.add('text-primary');
+    icon.classList.remove('text-slate-300');
+    document.getElementById('lang-indicator').textContent = code;
+    applyLang(code);
+    setTimeout(() => closeModal(), 400);
+  }
+
+  function toggle2FA(btn) {
+    const isOn = btn.dataset.on === 'true';
+    // Reuse toggleSwitch for visual update
+    toggleSwitch(btn);
+    const badge = document.getElementById('tfa-badge');
+    if (!isOn) {
+      badge.textContent = 'Enabled';
+      badge.className = 'inline-block mt-1.5 text-[10px] font-bold text-green-700 bg-green-100 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded-full uppercase';
+    } else {
+      badge.textContent = 'Not Enabled';
+      badge.className = 'inline-block mt-1.5 text-[10px] font-bold text-amber-700 bg-amber-100 dark:bg-amber-900/30 dark:text-amber-400 px-2 py-0.5 rounded-full uppercase';
+    }
+  }
+
+  function revokeSession(rowId, deviceName) {
+    const row = document.getElementById(rowId);
+    if (!row) return;
+    row.style.transition = 'opacity 0.3s';
+    row.style.opacity = '0';
+    setTimeout(() => {
+      row.remove();
+      document.getElementById('sessions-all-clear').classList.remove('hidden');
+      showToast(`Session on ${deviceName} revoked`, 'block', 'text-red-400');
+    }, 300);
+  }
+
+  function downloadMyData() {
+    const btn = document.getElementById('download-data-btn');
+    const icon = btn.querySelector('.material-symbols-outlined');
+    icon.textContent = 'hourglass_top';
+    btn.disabled = true;
+    btn.classList.add('opacity-60');
+    const content = [
+      'INSPESUB Portal — User Data Export',
+      '====================================',
+      `Name: James Wilson`,
+      `Role: Sub-inspector`,
+      `Email: james.wilson@inspesub.com`,
+      `Location: Houston, TX`,
+      ``,
+      `Active Sessions: Windows · Chrome (Current)`,
+      `2FA Enabled: ${document.getElementById('tfa-toggle').dataset.on === 'true' ? 'Yes' : 'No'}`,
+      ``,
+      `Export generated: ${new Date().toLocaleString()}`,
+    ].join('\n');
+    setTimeout(() => {
+      const blob = new Blob([content], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'inspesub-my-data.txt';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      icon.textContent = 'download_done';
+      btn.classList.remove('opacity-60');
+      btn.disabled = false;
+      showToast('Data export downloaded', 'download_done', 'text-green-400');
+      setTimeout(() => { icon.textContent = 'download'; }, 2000);
+    }, 800);
+  }
+
+  function requestDeletion() {
+    document.getElementById('deletion-confirm').classList.remove('hidden');
+  }
+
+  function confirmDeletion() {
+    document.getElementById('deletion-confirm').classList.add('hidden');
+    showToast('Deletion request submitted. You will be contacted within 48h.', 'mark_email_read', 'text-red-400');
+    closeModal();
+  }
+
+  function saveSecuritySettings() {
+    const tfa = document.getElementById('tfa-toggle').dataset.on === 'true';
+    showToast(`Security settings saved${tfa ? ' · 2FA enabled' : ''}`, 'security', 'text-blue-400');
+    closeModal();
+  }
+
+  let toastTimer;
+  function showToast(msg, icon = 'check_circle', color = 'text-green-400') {
+    clearTimeout(toastTimer);
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    const ic = document.getElementById('toast-icon');
+    ic.textContent = icon;
+    ic.className = `material-symbols-outlined text-xl shrink-0 ${color}`;
+    toast.classList.remove('hidden');
+    toast.classList.add('flex');
+    toastTimer = setTimeout(() => {
+      toast.classList.add('hidden');
+      toast.classList.remove('flex');
+    }, 3000);
+  }
+
+  function downloadPayslip(month, amount, paidOn, btn) {
+    // Animate button
+    const icon = btn.querySelector('.material-symbols-outlined');
+    icon.textContent = 'hourglass_top';
+    btn.disabled = true;
+
+    const content = [
+      '================================================',
+      '           INSPESUB GLOBAL - PAYSLIP            ',
+      '================================================',
+      '',
+      `  Period:       ${month}`,
+      `  Employee:     James Wilson`,
+      `  Employee ID:  INS-00342`,
+      `  Department:   Subsea Inspection`,
+      `  Role:         Sub-inspector`,
+      '',
+      '------------------------------------------------',
+      '  EARNINGS',
+      '------------------------------------------------',
+      `  Base Salary:               ${amount}`,
+      '  Overtime:                  $0.00',
+      '  Allowances:                $0.00',
+      '------------------------------------------------',
+      `  GROSS PAY:                 ${amount}`,
+      '',
+      '------------------------------------------------',
+      '  DEDUCTIONS',
+      '------------------------------------------------',
+      '  Tax (Federal):             $0.00',
+      '  Social Security:           $0.00',
+      '  Health Insurance:          $0.00',
+      '------------------------------------------------',
+      '  TOTAL DEDUCTIONS:          $0.00',
+      '',
+      '================================================',
+      `  NET PAY:                   ${amount}`,
+      `  Payment Date:              ${paidOn}`,
+      '================================================',
+      '',
+      '  This is an official payslip document.',
+      '  INSPESUB Global · Houston, TX',
+    ].join('\n');
+
+    setTimeout(() => {
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Payslip_${month.replace(' ', '_')}_JamesWilson.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      icon.textContent = 'download_done';
+      icon.classList.add('text-green-500');
+      setTimeout(() => {
+        icon.textContent = 'download';
+        icon.classList.remove('text-green-500');
+        btn.disabled = false;
+      }, 2000);
+
+      showToast(`Payslip ${month} downloaded`, 'download_done', 'text-green-400');
+    }, 600);
+  }
+
+  function startEditProfile() {
+    document.getElementById('profile-view').classList.add('hidden');
+    document.getElementById('profile-edit').classList.remove('hidden');
+    document.getElementById('profile-modal-title').textContent = 'Edit Profile';
+    document.getElementById('profile-close-btn').classList.add('hidden');
+    document.getElementById('profile-edit-btn').classList.add('hidden');
+    document.getElementById('profile-cancel-btn').classList.remove('hidden');
+    document.getElementById('profile-save-btn').classList.remove('hidden');
+    document.getElementById('profile-save-success').classList.add('hidden');
+  }
+
+  function cancelEditProfile() {
+    document.getElementById('profile-edit').classList.add('hidden');
+    document.getElementById('profile-view').classList.remove('hidden');
+    document.getElementById('profile-modal-title').textContent = 'My Profile';
+    document.getElementById('profile-close-btn').classList.remove('hidden');
+    document.getElementById('profile-edit-btn').classList.remove('hidden');
+    document.getElementById('profile-cancel-btn').classList.add('hidden');
+    document.getElementById('profile-save-btn').classList.add('hidden');
+  }
+
+  function saveProfile(e) {
+    e.preventDefault();
+    const name = document.getElementById('edit-name').value.trim();
+    const email = document.getElementById('edit-email').value.trim();
+    const phone = document.getElementById('edit-phone').value.trim();
+    const location = document.getElementById('edit-location').value.trim();
+    // Update display values
+    document.getElementById('profile-display-name').textContent = name;
+    document.getElementById('profile-display-email').textContent = email;
+    document.getElementById('profile-display-phone').textContent = phone;
+    document.getElementById('profile-display-location').textContent = location;
+    // Update initials
+    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+    document.getElementById('profile-edit-initials').textContent = initials;
+    // Switch back to view mode
+    cancelEditProfile();
+    // Show success message
+    const success = document.getElementById('profile-save-success');
+    success.classList.remove('hidden');
+    success.classList.add('flex');
+    setTimeout(() => { success.classList.add('hidden'); success.classList.remove('flex'); }, 3000);
+  }
+</script>
+<div id="section-dashboard" class="page-section"><div class="p-8 max-w-7xl mx-auto">
+<!-- Welcome Header -->
+<div class="mb-8">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight" data-i18n="welcome">Welcome back, James</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1"><span data-i18n="opsstatus">Here's your operational status for</span> <span class="font-medium">October 24, 2023</span></p>
+</div>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div onclick="navigateTo('calendar')" class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-xl shadow-sm cursor-pointer hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all">
+<div class="flex items-center justify-between mb-4">
+<div class="size-10 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined">event_available</span>
+</div>
+<span class="text-green-600 bg-green-50 dark:bg-green-900/30 text-xs font-bold px-2 py-1 rounded-full">+2%</span>
+</div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400" data-i18n="card.attendance">Attendance (Month)</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">95.4%</p>
+</div>
+<div onclick="navigateTo('documents')" class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-xl shadow-sm cursor-pointer hover:shadow-md hover:border-amber-200 dark:hover:border-amber-800 transition-all">
+<div class="flex items-center justify-between mb-4">
+<div class="size-10 bg-amber-50 dark:bg-amber-900/30 rounded-lg flex items-center justify-center text-amber-600">
+<span class="material-symbols-outlined">assignment_late</span>
+</div>
+</div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400" data-i18n="card.pendingtasks">Pending Tasks</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">4</p>
+</div>
+<div onclick="openModal('modal-payslips')" class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-xl shadow-sm cursor-pointer hover:shadow-md hover:border-green-200 dark:hover:border-green-800 transition-all">
+<div class="flex items-center justify-between mb-4">
+<div class="size-10 bg-green-50 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<span class="bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-tight" data-i18n="badge.new">New</span>
+</div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400" data-i18n="card.payslip">Latest Payslip</p>
+<p class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-1" data-i18n="card.payslip.val">Available</p>
+</div>
+<div onclick="navigateTo('myteam')" class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-xl shadow-sm cursor-pointer hover:shadow-md hover:border-indigo-200 dark:hover:border-indigo-800 transition-all">
+<div class="flex items-center justify-between mb-4">
+<div class="size-10 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center text-indigo-600">
+<span class="material-symbols-outlined">monitoring</span>
+</div>
+</div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400" data-i18n="card.teamstatus">Team Status</p>
+<p class="text-2xl font-bold text-green-600 mt-1" data-i18n="card.teamstatus.val">On Track</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Recent Documents & RDOs -->
+<div class="lg:col-span-2 space-y-8">
+<section>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold text-slate-900 dark:text-slate-100" data-i18n="docs.title">Recent Documents &amp; RDOs</h3>
+<button onclick="navigateTo('documents')" class="text-primary text-sm font-semibold hover:underline" data-i18n="docs.viewall">View all</button>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider" data-i18n="table.name">Name</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider" data-i18n="table.type">Type</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider" data-i18n="table.date">Date</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider" data-i18n="table.status">Status</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">description</span>
+<span class="text-sm font-medium">Monthly Inspection Report</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500" data-i18n="type.document">Document</td>
+<td class="px-6 py-4 text-sm text-slate-500">Oct 22, 2023</td>
+<td class="px-6 py-4">
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2.5 py-1 rounded text-xs font-bold" data-i18n="status.signed">Signed</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button onclick="dashboardDownload('Monthly Inspection Report', 'Oct 22, 2023', 'Signed')" class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">download</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">event_busy</span>
+<span class="text-sm font-medium">RDO Request - Personal Leave</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500" data-i18n="type.rdo">RDO</td>
+<td class="px-6 py-4 text-sm text-slate-500">Oct 20, 2023</td>
+<td class="px-6 py-4">
+<span class="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-2.5 py-1 rounded text-xs font-bold" data-i18n="status.approved">Approved</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button onclick="navigateTo('rdos')" class="text-slate-400 hover:text-primary transition-colors" title="View RDO"><span class="material-symbols-outlined">visibility</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">description</span>
+<span class="text-sm font-medium">Operational Protocol v4.2</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500" data-i18n="type.document">Document</td>
+<td class="px-6 py-4 text-sm text-slate-500">Oct 18, 2023</td>
+<td class="px-6 py-4">
+<span class="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 px-2.5 py-1 rounded text-xs font-bold" data-i18n="status.actionreq">Action Required</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button onclick="showToast('Operational Protocol v4.2 opened for review', 'edit_document', 'text-amber-400')" class="text-slate-400 hover:text-amber-500 transition-colors" title="Review & Sign"><span class="material-symbols-outlined">edit</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">description</span>
+<span class="text-sm font-medium">Q3 Compliance Audit</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500" data-i18n="type.document">Document</td>
+<td class="px-6 py-4 text-sm text-slate-500">Oct 15, 2023</td>
+<td class="px-6 py-4">
+<span class="bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 px-2.5 py-1 rounded text-xs font-bold" data-i18n="status.archived">Archived</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button onclick="dashboardDownload('Q3 Compliance Audit', 'Oct 15, 2023', 'Archived')" class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">download</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Announcements Feed -->
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 dark:text-slate-100" data-i18n="announcements.title">Internal Announcements</h3>
+</div>
+<div class="space-y-4">
+<div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-xl shadow-sm relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div class="flex items-start justify-between mb-2">
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase" data-i18n="badge.urgent">Urgent</span>
+<span class="text-[10px] text-slate-400 font-medium uppercase" data-i18n="time.2hago">2h ago</span>
+</div>
+<h4 class="font-bold text-sm text-slate-900 dark:text-slate-100 mb-2" data-i18n="ann1.title">System Maintenance Notice</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-3" data-i18n="ann1.body">
+                                The portal will be offline for scheduled security updates tonight from 22:00 to 02:00. Please save all pending reports.
+                            </p>
+<button onclick="navigateTo('announcements')" class="text-primary text-xs font-bold flex items-center gap-1 hover:gap-2 transition-all">
+                                <span data-i18n="ann1.cta">Read More</span> <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-xl shadow-sm">
+<div class="flex items-start justify-between mb-2">
+<span class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase" data-i18n="badge.general">General</span>
+<span class="text-[10px] text-slate-400 font-medium uppercase" data-i18n="time.yesterday">Yesterday</span>
+</div>
+<h4 class="font-bold text-sm text-slate-900 dark:text-slate-100 mb-2" data-i18n="ann2.title">New Operational Guidelines Issued</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-3" data-i18n="ann2.body">
+                                Updated protocols for field inspections have been uploaded to the Documents section. Compliance is required by next week.
+                            </p>
+<button onclick="dashboardDownload('New Operational Guidelines v2023', 'Oct 23, 2023', 'PDF')" class="text-primary text-xs font-bold flex items-center gap-1 hover:gap-2 transition-all">
+                                <span data-i18n="ann2.cta">View PDF</span> <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-xl shadow-sm">
+<div class="flex items-start justify-between mb-2">
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] font-bold px-2 py-0.5 rounded uppercase" data-i18n="badge.hr">HR</span>
+<span class="text-[10px] text-slate-400 font-medium uppercase" data-i18n="time.3dago">3 days ago</span>
+</div>
+<h4 class="font-bold text-sm text-slate-900 dark:text-slate-100 mb-2" data-i18n="ann3.title">Holiday Season RDO Applications</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed" data-i18n="ann3.body">
+                                Please submit your leave requests for the upcoming holiday period by November 1st for priority processing.
+                            </p>
+</div>
+</div>
+<button onclick="navigateTo('announcements')" class="w-full py-3 text-sm font-semibold text-slate-500 bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-100 dark:border-slate-800" data-i18n="viewall.announcements">
+                        View All Announcements
+                    </button>
+</div>
+</div>
+</div>
+</div><!-- /section-dashboard -->
+
+<!-- ===================== CALENDAR ===================== -->
+<div id="section-calendar" class="page-section hidden p-8 max-w-7xl mx-auto">
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Calendar</h2>
+      <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Your schedule and upcoming events</p>
+    </div>
+    <button onclick="openNewEventForm()" class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-colors">
+      <span class="material-symbols-outlined text-base">add</span> New Event
+    </button>
+  </div>
+
+  <!-- New Event inline form -->
+  <div id="new-event-form" class="hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm p-6 mb-6">
+    <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4">Add New Event</h3>
+    <form onsubmit="addCalendarEvent(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="md:col-span-2 flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Title</label>
+        <input id="evt-title" type="text" required placeholder="Event name..." class="rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm h-10 px-3"/>
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Type</label>
+        <select id="evt-type" class="rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm h-10 px-3">
+          <option value="general">General</option>
+          <option value="rdo">RDO</option>
+          <option value="deadline">Deadline</option>
+          <option value="meeting">Meeting</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Date</label>
+        <input id="evt-date" type="date" required class="rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm h-10 px-3"/>
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Note (optional)</label>
+        <input id="evt-note" type="text" placeholder="Short description..." class="rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm h-10 px-3"/>
+      </div>
+      <div class="flex items-end gap-3">
+        <button type="submit" class="px-4 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-primary/90">Add Event</button>
+        <button type="button" onclick="document.getElementById('new-event-form').classList.add('hidden')" class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Month header -->
+  <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden mb-6">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+      <button onclick="calShiftMonth(-1)" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+      <h3 class="text-base font-bold text-slate-900 dark:text-slate-100" id="cal-month-label">October 2023</h3>
+      <button onclick="calShiftMonth(1)" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+    </div>
+    <div class="grid grid-cols-7 text-center border-b border-slate-100 dark:border-slate-800">
+      <div class="py-2 text-xs font-bold text-slate-400 uppercase">Sun</div>
+      <div class="py-2 text-xs font-bold text-slate-400 uppercase">Mon</div>
+      <div class="py-2 text-xs font-bold text-slate-400 uppercase">Tue</div>
+      <div class="py-2 text-xs font-bold text-slate-400 uppercase">Wed</div>
+      <div class="py-2 text-xs font-bold text-slate-400 uppercase">Thu</div>
+      <div class="py-2 text-xs font-bold text-slate-400 uppercase">Fri</div>
+      <div class="py-2 text-xs font-bold text-slate-400 uppercase">Sat</div>
+    </div>
+    <div id="cal-grid" class="grid grid-cols-7"></div>
+  </div>
+  <!-- Upcoming events -->
+  <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm p-6">
+    <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4">Upcoming Events</h3>
+    <div id="upcoming-events-list" class="space-y-3"></div>
+    <p id="upcoming-empty" class="hidden text-xs text-slate-400 text-center py-4">No upcoming events.</p>
+  </div>
+</div>
+
+<!-- ===================== MY TEAM ===================== -->
+<div id="section-myteam" class="page-section hidden p-8 max-w-7xl mx-auto">
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">My Team</h2>
+      <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Subsea inspection unit — Offshore crew</p>
+    </div>
+    <div class="relative w-56">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+      <input type="text" oninput="filterTeam(this.value)" placeholder="Search members..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg pl-9 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 placeholder:text-slate-400"/>
+    </div>
+  </div>
+  <div id="team-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <!-- Member cards — onclick opens detail -->
+    <div onclick="openMemberDetail('JW')" class="team-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl p-5 shadow-sm flex flex-col gap-3 cursor-pointer hover:shadow-md hover:border-primary/30 transition-all" data-name="James Wilson" data-role="Sub-inspector">
+      <div class="flex items-center gap-3">
+        <div class="size-11 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm shrink-0">JW</div>
+        <div><p class="text-sm font-bold text-slate-900 dark:text-slate-100">James Wilson</p><p class="text-xs text-slate-500">Sub-inspector</p></div>
+        <span class="ml-auto text-[10px] font-bold text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full">You</span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-500"><span class="material-symbols-outlined text-base">location_on</span>Houston, TX</div>
+      <div class="flex gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
+        <span class="text-[10px] text-slate-400 flex items-center gap-1"><span class="size-1.5 rounded-full bg-green-500"></span>Online</span>
+      </div>
+    </div>
+    <div onclick="openMemberDetail('MC')" class="team-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl p-5 shadow-sm flex flex-col gap-3 cursor-pointer hover:shadow-md hover:border-primary/30 transition-all" data-name="Maria Costa" data-role="Lead Inspector">
+      <div class="flex items-center gap-3">
+        <div class="size-11 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 font-bold text-sm shrink-0">MC</div>
+        <div><p class="text-sm font-bold text-slate-900 dark:text-slate-100">Maria Costa</p><p class="text-xs text-slate-500">Lead Inspector</p></div>
+        <span class="ml-auto size-2 rounded-full bg-green-500"></span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-500"><span class="material-symbols-outlined text-base">location_on</span>Houston, TX</div>
+      <div class="flex gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
+        <span class="text-[10px] text-slate-400 flex items-center gap-1"><span class="size-1.5 rounded-full bg-green-500"></span>Online</span>
+      </div>
+    </div>
+    <div onclick="openMemberDetail('RB')" class="team-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl p-5 shadow-sm flex flex-col gap-3 cursor-pointer hover:shadow-md hover:border-primary/30 transition-all" data-name="Rafael Brandão" data-role="ROV Pilot">
+      <div class="flex items-center gap-3">
+        <div class="size-11 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 font-bold text-sm shrink-0">RB</div>
+        <div><p class="text-sm font-bold text-slate-900 dark:text-slate-100">Rafael Brandão</p><p class="text-xs text-slate-500">ROV Pilot</p></div>
+        <span class="ml-auto size-2 rounded-full bg-green-500"></span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-500"><span class="material-symbols-outlined text-base">location_on</span>Offshore — Gulf of Mexico</div>
+      <div class="flex gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
+        <span class="text-[10px] text-slate-400 flex items-center gap-1"><span class="size-1.5 rounded-full bg-green-500"></span>Online · Offshore deployment</span>
+      </div>
+    </div>
+    <div onclick="openMemberDetail('SO')" class="team-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl p-5 shadow-sm flex flex-col gap-3 cursor-pointer hover:shadow-md hover:border-primary/30 transition-all" data-name="Sarah O'Brien" data-role="Safety Officer">
+      <div class="flex items-center gap-3">
+        <div class="size-11 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-700 font-bold text-sm shrink-0">SO</div>
+        <div><p class="text-sm font-bold text-slate-900 dark:text-slate-100">Sarah O'Brien</p><p class="text-xs text-slate-500">Safety Officer</p></div>
+        <span class="ml-auto size-2 rounded-full bg-slate-300"></span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-500"><span class="material-symbols-outlined text-base">location_on</span>Houston, TX</div>
+      <div class="flex gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
+        <span class="text-[10px] text-slate-400 flex items-center gap-1"><span class="size-1.5 rounded-full bg-slate-300"></span>Offline</span>
+      </div>
+    </div>
+    <div onclick="openMemberDetail('TN')" class="team-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl p-5 shadow-sm flex flex-col gap-3 cursor-pointer hover:shadow-md hover:border-primary/30 transition-all" data-name="Tiago Neves" data-role="Subsea Engineer">
+      <div class="flex items-center gap-3">
+        <div class="size-11 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 font-bold text-sm shrink-0">TN</div>
+        <div><p class="text-sm font-bold text-slate-900 dark:text-slate-100">Tiago Neves</p><p class="text-xs text-slate-500">Subsea Engineer</p></div>
+        <span class="ml-auto size-2 rounded-full bg-green-500"></span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-500"><span class="material-symbols-outlined text-base">location_on</span>Offshore — Gulf of Mexico</div>
+      <div class="flex gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
+        <span class="text-[10px] text-slate-400 flex items-center gap-1"><span class="size-1.5 rounded-full bg-green-500"></span>Online · Offshore deployment</span>
+      </div>
+    </div>
+    <div onclick="openMemberDetail('KL')" class="team-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl p-5 shadow-sm flex flex-col gap-3 cursor-pointer hover:shadow-md hover:border-primary/30 transition-all" data-name="Karen Liu" data-role="Data Analyst">
+      <div class="flex items-center gap-3">
+        <div class="size-11 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 font-bold text-sm shrink-0">KL</div>
+        <div><p class="text-sm font-bold text-slate-900 dark:text-slate-100">Karen Liu</p><p class="text-xs text-slate-500">Data Analyst</p></div>
+        <span class="ml-auto size-2 rounded-full bg-amber-400"></span>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-500"><span class="material-symbols-outlined text-base">location_on</span>Houston, TX</div>
+      <div class="flex gap-2 pt-1 border-t border-slate-100 dark:border-slate-800">
+        <span class="text-[10px] text-slate-400 flex items-center gap-1"><span class="size-1.5 rounded-full bg-amber-400"></span>Away</span>
+      </div>
+    </div>
+  </div>
+  <p id="team-empty" class="hidden text-sm text-slate-400 text-center py-8">No members found.</p>
+  <div class="mt-4 flex items-center gap-4 text-xs text-slate-400">
+    <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-green-500"></span>Online</span>
+    <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-amber-400"></span>Away</span>
+    <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-slate-300"></span>Offline</span>
+  </div>
+</div>
+
+</div>
+
+<!-- ===================== RDOs ===================== -->
+<div id="section-rdos" class="page-section hidden p-8 max-w-7xl mx-auto">
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">RDOs</h2>
+      <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Rostered Days Off — requests and history</p>
+    </div>
+    <button onclick="document.getElementById('rdo-form').classList.toggle('hidden')" class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-colors">
+      <span class="material-symbols-outlined text-base">add</span> New Request
+    </button>
+  </div>
+  <!-- New RDO form (hidden by default) -->
+  <div id="rdo-form" class="hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm p-6 mb-6">
+    <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-4">Submit New RDO Request</h3>
+    <form onsubmit="submitRDO(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Type</label>
+        <select id="rdo-type" class="rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm h-10 px-3">
+          <option>Personal Leave</option><option>Medical Leave</option><option>Annual Leave</option><option>Emergency Leave</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Start Date</label>
+        <input type="date" id="rdo-start" class="rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm h-10 px-3" required/>
+      </div>
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">End Date</label>
+        <input type="date" id="rdo-end" class="rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm h-10 px-3" required/>
+      </div>
+      <div class="md:col-span-3 flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Reason (optional)</label>
+        <textarea id="rdo-reason" rows="2" class="rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm px-3 py-2 resize-none" placeholder="Brief description..."></textarea>
+      </div>
+      <div class="md:col-span-3 flex justify-end gap-3">
+        <button type="button" onclick="document.getElementById('rdo-form').classList.add('hidden')" class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">Cancel</button>
+        <button type="submit" class="px-4 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-primary/90">Submit Request</button>
+      </div>
+    </form>
+  </div>
+  <!-- RDO Table -->
+  <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
+    <table class="w-full text-left border-collapse">
+      <thead><tr class="bg-slate-50 dark:bg-slate-800/50">
+        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Type</th>
+        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Start</th>
+        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">End</th>
+        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Days</th>
+        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+      </tr></thead>
+      <tbody id="rdo-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+          <td class="px-6 py-4 text-sm font-medium">Personal Leave</td>
+          <td class="px-6 py-4 text-sm text-slate-500">Oct 20, 2023</td>
+          <td class="px-6 py-4 text-sm text-slate-500">Oct 20, 2023</td>
+          <td class="px-6 py-4 text-sm text-slate-500">1</td>
+          <td class="px-6 py-4"><span class="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-2.5 py-1 rounded text-xs font-bold">Approved</span></td>
+        </tr>
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+          <td class="px-6 py-4 text-sm font-medium">Annual Leave</td>
+          <td class="px-6 py-4 text-sm text-slate-500">Aug 14, 2023</td>
+          <td class="px-6 py-4 text-sm text-slate-500">Aug 18, 2023</td>
+          <td class="px-6 py-4 text-sm text-slate-500">5</td>
+          <td class="px-6 py-4"><span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2.5 py-1 rounded text-xs font-bold">Completed</span></td>
+        </tr>
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+          <td class="px-6 py-4 text-sm font-medium">Medical Leave</td>
+          <td class="px-6 py-4 text-sm text-slate-500">Jun 05, 2023</td>
+          <td class="px-6 py-4 text-sm text-slate-500">Jun 06, 2023</td>
+          <td class="px-6 py-4 text-sm text-slate-500">2</td>
+          <td class="px-6 py-4"><span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2.5 py-1 rounded text-xs font-bold">Completed</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===================== DOCUMENTS ===================== -->
+<div id="section-documents" class="page-section hidden p-8 max-w-7xl mx-auto">
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Documents</h2>
+      <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">All documents and RDO records</p>
+    </div>
+    <div class="relative w-64">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+      <input type="text" oninput="filterDocs(this.value)" placeholder="Search documents..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg pl-9 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/20 placeholder:text-slate-400"/>
+    </div>
+  </div>
+  <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
+    <table class="w-full text-left border-collapse">
+      <thead><tr class="bg-slate-50 dark:bg-slate-800/50">
+        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Name</th>
+        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Type</th>
+        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Date</th>
+        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider"></th>
+      </tr></thead>
+      <tbody id="docs-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+        <tr class="doc-row hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-4"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-slate-400">description</span><span class="text-sm font-medium">Monthly Inspection Report</span></div></td><td class="px-6 py-4 text-sm text-slate-500">Document</td><td class="px-6 py-4 text-sm text-slate-500">Oct 22, 2023</td><td class="px-6 py-4"><span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2.5 py-1 rounded text-xs font-bold">Signed</span></td><td class="px-6 py-4 text-right"><button onclick="docAction('Monthly Inspection Report','Document','Oct 22, 2023','Signed','download')" class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">download</span></button></td></tr>
+        <tr class="doc-row hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-4"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-slate-400">event_busy</span><span class="text-sm font-medium">RDO Request - Personal Leave</span></div></td><td class="px-6 py-4 text-sm text-slate-500">RDO</td><td class="px-6 py-4 text-sm text-slate-500">Oct 20, 2023</td><td class="px-6 py-4"><span class="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-2.5 py-1 rounded text-xs font-bold">Approved</span></td><td class="px-6 py-4 text-right"><button onclick="docAction('RDO Request - Personal Leave','RDO','Oct 20, 2023','Approved','view')" class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">visibility</span></button></td></tr>
+        <tr class="doc-row hover:bg-slate-50 dark:hover:bg-slate-800/30 bg-amber-50/30 dark:bg-amber-900/5"><td class="px-6 py-4"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-amber-500">description</span><span class="text-sm font-medium">Operational Protocol v4.2</span></div></td><td class="px-6 py-4 text-sm text-slate-500">Document</td><td class="px-6 py-4 text-sm text-slate-500">Oct 18, 2023</td><td class="px-6 py-4"><span id="doc-sign-status" class="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 px-2.5 py-1 rounded text-xs font-bold">Action Required</span></td><td class="px-6 py-4 text-right"><button id="doc-sign-btn" onclick="docAction('Operational Protocol v4.2','Document','Oct 18, 2023','Action Required','sign')" class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button></td></tr>
+        <tr class="doc-row hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-4"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-slate-400">description</span><span class="text-sm font-medium">Q3 Compliance Audit</span></div></td><td class="px-6 py-4 text-sm text-slate-500">Document</td><td class="px-6 py-4 text-sm text-slate-500">Oct 15, 2023</td><td class="px-6 py-4"><span class="bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 px-2.5 py-1 rounded text-xs font-bold">Archived</span></td><td class="px-6 py-4 text-right"><button onclick="docAction('Q3 Compliance Audit','Document','Oct 15, 2023','Archived','download')" class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">download</span></button></td></tr>
+        <tr class="doc-row hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-4"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-slate-400">description</span><span class="text-sm font-medium">Annual Safety Training Certificate</span></div></td><td class="px-6 py-4 text-sm text-slate-500">Document</td><td class="px-6 py-4 text-sm text-slate-500">Sep 10, 2023</td><td class="px-6 py-4"><span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2.5 py-1 rounded text-xs font-bold">Signed</span></td><td class="px-6 py-4 text-right"><button onclick="docAction('Annual Safety Training Certificate','Document','Sep 10, 2023','Signed','download')" class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">download</span></button></td></tr>
+        <tr class="doc-row hover:bg-slate-50 dark:hover:bg-slate-800/30"><td class="px-6 py-4"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-slate-400">event_busy</span><span class="text-sm font-medium">RDO Request - Annual Leave</span></div></td><td class="px-6 py-4 text-sm text-slate-500">RDO</td><td class="px-6 py-4 text-sm text-slate-500">Aug 14, 2023</td><td class="px-6 py-4"><span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2.5 py-1 rounded text-xs font-bold">Completed</span></td><td class="px-6 py-4 text-right"><button onclick="docAction('RDO Request - Annual Leave','RDO','Aug 14, 2023','Completed','view')" class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">visibility</span></button></td></tr>
+      </tbody>
+    </table>
+    <p id="docs-empty" class="hidden text-center text-sm text-slate-400 py-8">No documents found.</p>
+  </div>
+</div>
+
+<!-- ===================== ANNOUNCEMENTS ===================== -->
+<div id="section-announcements" class="page-section hidden p-8 max-w-7xl mx-auto">
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Announcements</h2>
+    <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Company-wide and team communications</p>
+  </div>
+  <!-- Filter pills -->
+  <div class="flex gap-2 mb-4 flex-wrap">
+    <button onclick="filterAnnouncements('all')" data-filter="all" class="ann-filter px-3 py-1 rounded-full text-xs font-bold bg-primary text-white transition-colors">All</button>
+    <button onclick="filterAnnouncements('urgent')" data-filter="urgent" class="ann-filter px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Urgent</button>
+    <button onclick="filterAnnouncements('hr')" data-filter="hr" class="ann-filter px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">HR</button>
+    <button onclick="filterAnnouncements('safety')" data-filter="safety" class="ann-filter px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Safety</button>
+    <button onclick="filterAnnouncements('general')" data-filter="general" class="ann-filter px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">General</button>
+  </div>
+  <div class="space-y-4 max-w-2xl" id="announcements-list">
+    <!-- Urgent -->
+    <div class="ann-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm relative overflow-hidden transition-opacity" data-category="urgent" data-id="ann1">
+      <div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+      <div class="p-5">
+        <div class="flex items-start justify-between mb-2">
+          <span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase">Urgent</span>
+          <span class="text-[10px] text-slate-400 font-medium uppercase">2h ago</span>
+        </div>
+        <h4 class="font-bold text-sm text-slate-900 dark:text-slate-100 mb-2">System Maintenance Notice</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">The portal will be offline for scheduled security updates tonight from 22:00 to 02:00. Please save all pending reports and log out before maintenance begins.</p>
+        <div class="flex items-center gap-2 mt-4">
+          <button onclick="acknowledgeAnn('ann1',this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">
+            <span class="material-symbols-outlined text-sm">check</span> Acknowledge
+          </button>
+          <button onclick="dismissAnn('ann1')" class="px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">Dismiss</button>
+        </div>
+      </div>
+    </div>
+    <!-- General 1 -->
+    <div class="ann-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm relative overflow-hidden transition-opacity" data-category="general" data-id="ann2">
+      <div class="p-5">
+        <div class="flex items-start justify-between mb-2">
+          <span class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase">General</span>
+          <span class="text-[10px] text-slate-400 font-medium uppercase">Yesterday</span>
+        </div>
+        <h4 class="font-bold text-sm text-slate-900 dark:text-slate-100 mb-2">New Operational Guidelines Issued</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Updated protocols for field inspections have been uploaded to the Documents section. Compliance is required by next week. Review carefully before signing.</p>
+        <div class="flex items-center gap-2 mt-4">
+          <button onclick="acknowledgeAnn('ann2',this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">
+            <span class="material-symbols-outlined text-sm">check</span> Acknowledge
+          </button>
+          <button onclick="dismissAnn('ann2')" class="px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">Dismiss</button>
+        </div>
+      </div>
+    </div>
+    <!-- HR -->
+    <div class="ann-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm relative overflow-hidden transition-opacity" data-category="hr" data-id="ann3">
+      <div class="p-5">
+        <div class="flex items-start justify-between mb-2">
+          <span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] font-bold px-2 py-0.5 rounded uppercase">HR</span>
+          <span class="text-[10px] text-slate-400 font-medium uppercase">3 days ago</span>
+        </div>
+        <h4 class="font-bold text-sm text-slate-900 dark:text-slate-100 mb-2">Holiday Season RDO Applications</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Please submit your leave requests for the upcoming holiday period by November 1st for priority processing. Late submissions may not be guaranteed approval.</p>
+        <div class="flex items-center gap-2 mt-4">
+          <button onclick="acknowledgeAnn('ann3',this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">
+            <span class="material-symbols-outlined text-sm">check</span> Acknowledge
+          </button>
+          <button onclick="dismissAnn('ann3')" class="px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">Dismiss</button>
+        </div>
+      </div>
+    </div>
+    <!-- Safety -->
+    <div class="ann-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm relative overflow-hidden transition-opacity" data-category="safety" data-id="ann4">
+      <div class="p-5">
+        <div class="flex items-start justify-between mb-2">
+          <span class="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Safety</span>
+          <span class="text-[10px] text-slate-400 font-medium uppercase">1 week ago</span>
+        </div>
+        <h4 class="font-bold text-sm text-slate-900 dark:text-slate-100 mb-2">Mandatory Safety Refresher — Q4 2023</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">All offshore personnel must complete the Q4 safety refresher module by October 31st. Access the training portal through your credentials and submit the completion certificate.</p>
+        <div class="flex items-center gap-2 mt-4">
+          <button onclick="acknowledgeAnn('ann4',this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">
+            <span class="material-symbols-outlined text-sm">check</span> Acknowledge
+          </button>
+          <button onclick="dismissAnn('ann4')" class="px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">Dismiss</button>
+        </div>
+      </div>
+    </div>
+    <!-- General 2 -->
+    <div class="ann-card bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-sm relative overflow-hidden transition-opacity" data-category="general" data-id="ann5">
+      <div class="p-5">
+        <div class="flex items-start justify-between mb-2">
+          <span class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase">General</span>
+          <span class="text-[10px] text-slate-400 font-medium uppercase">2 weeks ago</span>
+        </div>
+        <h4 class="font-bold text-sm text-slate-900 dark:text-slate-100 mb-2">New ROV Equipment Deployment</h4>
+        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Two new Schilling Robotics UHD ROVs have been deployed to the Gulf of Mexico fleet. Training sessions for all ROV pilots are scheduled for early November.</p>
+        <div class="flex items-center gap-2 mt-4">
+          <button onclick="acknowledgeAnn('ann5',this)" class="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">
+            <span class="material-symbols-outlined text-sm">check</span> Acknowledge
+          </button>
+          <button onclick="dismissAnn('ann5')" class="px-3 py-1.5 text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">Dismiss</button>
+        </div>
+      </div>
+    </div>
+    <p id="ann-empty" class="hidden text-center text-sm text-slate-400 py-8">No announcements in this category.</p>
+  </div>
+</div>
+
+<!-- ===================== PAYSLIPS (section alias → modal) ===================== -->
+<div id="section-payslips" class="page-section hidden"></div>
+
+</main>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" class="hidden fixed bottom-6 right-6 z-[200] flex items-center gap-3 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl text-sm font-medium max-w-xs transition-all">
+  <span id="toast-icon" class="material-symbols-outlined text-green-400 text-xl shrink-0">check_circle</span>
+  <span id="toast-msg">Downloaded successfully</span>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div id="modal-backdrop" onclick="closeModalBackdrop(event)" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+
+  <!-- My Profile Modal -->
+  <div id="modal-profile" class="modal-content hidden w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+      <h3 id="profile-modal-title" class="text-base font-bold text-slate-900 dark:text-slate-100">My Profile</h3>
+      <button onclick="closeModal()" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+    </div>
+
+    <!-- View mode -->
+    <div id="profile-view" class="p-6">
+      <div id="profile-save-success" class="hidden flex items-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-sm font-semibold px-4 py-3 rounded-lg mb-4">
+        <span class="material-symbols-outlined text-xl">check_circle</span>
+        Profile updated successfully!
+      </div>
+      <div class="flex items-center gap-5 mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
+        <div class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl shrink-0">JW</div>
+        <div>
+          <h4 id="profile-display-name" class="text-lg font-bold text-slate-900 dark:text-slate-100">James Wilson</h4>
+          <p class="text-sm text-slate-500">Sub-inspector · INSPESUB Global</p>
+          <span class="inline-flex items-center gap-1 mt-1 text-xs text-green-600 font-semibold bg-green-50 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
+            <span class="size-1.5 bg-green-500 rounded-full"></span> Active
+          </span>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4 text-sm">
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Employee ID</p>
+          <p class="text-slate-900 dark:text-slate-100 font-medium">INS-00342</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Department</p>
+          <p class="text-slate-900 dark:text-slate-100 font-medium">Subsea Inspection</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Email</p>
+          <p id="profile-display-email" class="text-slate-900 dark:text-slate-100 font-medium">j.wilson@inspesub.com</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Phone</p>
+          <p id="profile-display-phone" class="text-slate-900 dark:text-slate-100 font-medium">+1 (555) 987-6543</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Location</p>
+          <p id="profile-display-location" class="text-slate-900 dark:text-slate-100 font-medium">Houston, TX</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Member Since</p>
+          <p class="text-slate-900 dark:text-slate-100 font-medium">March 2021</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit mode -->
+    <form id="profile-edit" class="hidden p-6" onsubmit="saveProfile(event)">
+      <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
+        <div class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl shrink-0 relative group cursor-pointer" title="Change photo">
+          <span id="profile-edit-initials">JW</span>
+          <div class="absolute inset-0 rounded-full bg-black/20 hidden group-hover:flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-sm">photo_camera</span>
+          </div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Full Name</p>
+          <input id="edit-name" type="text" value="James Wilson" class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 px-3 text-sm" required/>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Employee ID</p>
+          <input type="text" value="INS-00342" disabled class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-slate-400 h-10 px-3 text-sm cursor-not-allowed"/>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Department</p>
+          <input type="text" value="Subsea Inspection" disabled class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-slate-400 h-10 px-3 text-sm cursor-not-allowed"/>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Email</p>
+          <input id="edit-email" type="email" value="j.wilson@inspesub.com" class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 px-3 text-sm" required/>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Phone</p>
+          <input id="edit-phone" type="tel" value="+1 (555) 987-6543" class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 px-3 text-sm"/>
+        </div>
+        <div class="col-span-2">
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Location</p>
+          <input id="edit-location" type="text" value="Houston, TX" class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 px-3 text-sm"/>
+        </div>
+      </div>
+    </form>
+
+    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 flex justify-end gap-3 border-t border-slate-100 dark:border-slate-800">
+      <button id="profile-close-btn" onclick="closeModal()" class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors">Close</button>
+      <button id="profile-cancel-btn" onclick="cancelEditProfile()" class="hidden px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors">Cancel</button>
+      <button id="profile-edit-btn" onclick="startEditProfile()" class="px-4 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">Edit Profile</button>
+      <button id="profile-save-btn" type="submit" form="profile-edit" class="hidden px-4 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">Save Changes</button>
+    </div>
+  </div>
+
+  <!-- Payslips Modal -->
+  <div id="modal-payslips" class="modal-content hidden w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+      <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Payslips</h3>
+      <button onclick="closeModal()" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+    </div>
+    <div class="divide-y divide-slate-100 dark:divide-slate-800 max-h-96 overflow-y-auto">
+      <div class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <div class="flex items-center gap-3">
+          <div class="size-10 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center justify-center text-green-600 shrink-0">
+            <span class="material-symbols-outlined text-xl">payments</span>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">October 2023</p>
+            <p class="text-xs text-slate-500">Paid on Oct 31, 2023</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-bold text-slate-900 dark:text-slate-100">$6,420.00</span>
+          <span class="bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">New</span>
+          <button onclick="downloadPayslip('October 2023', '$6,420.00', 'Oct 31, 2023', this)" class="text-slate-400 hover:text-primary transition-colors" title="Download payslip">
+            <span class="material-symbols-outlined text-xl">download</span>
+          </button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <div class="flex items-center gap-3">
+          <div class="size-10 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-500 shrink-0">
+            <span class="material-symbols-outlined text-xl">payments</span>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">September 2023</p>
+            <p class="text-xs text-slate-500">Paid on Sep 30, 2023</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-bold text-slate-900 dark:text-slate-100">$6,420.00</span>
+          <button onclick="downloadPayslip('September 2023', '$6,420.00', 'Sep 30, 2023', this)" class="text-slate-400 hover:text-primary transition-colors" title="Download payslip">
+            <span class="material-symbols-outlined text-xl">download</span>
+          </button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <div class="flex items-center gap-3">
+          <div class="size-10 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-500 shrink-0">
+            <span class="material-symbols-outlined text-xl">payments</span>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">August 2023</p>
+            <p class="text-xs text-slate-500">Paid on Aug 31, 2023</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-bold text-slate-900 dark:text-slate-100">$6,200.00</span>
+          <button onclick="downloadPayslip('August 2023', '$6,200.00', 'Aug 31, 2023', this)" class="text-slate-400 hover:text-primary transition-colors" title="Download payslip">
+            <span class="material-symbols-outlined text-xl">download</span>
+          </button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <div class="flex items-center gap-3">
+          <div class="size-10 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-500 shrink-0">
+            <span class="material-symbols-outlined text-xl">payments</span>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">July 2023</p>
+            <p class="text-xs text-slate-500">Paid on Jul 31, 2023</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm font-bold text-slate-900 dark:text-slate-100">$6,200.00</span>
+          <button onclick="downloadPayslip('July 2023', '$6,200.00', 'Jul 31, 2023', this)" class="text-slate-400 hover:text-primary transition-colors" title="Download payslip">
+            <span class="material-symbols-outlined text-xl">download</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+      <button onclick="closeModal()" class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors">Close</button>
+    </div>
+  </div>
+
+  <!-- All Notifications Modal -->
+  <div id="modal-all-notifs" class="modal-content hidden w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+      <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">All Notifications</h3>
+      <button onclick="closeModal()" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+    </div>
+    <!-- Detail views (shown when clicking a notification) -->
+    <div id="notif-detail-1" class="notif-detail hidden p-6">
+      <button onclick="backToNotifList()" class="flex items-center gap-1 text-xs text-primary font-semibold mb-4 hover:underline">
+        <span class="material-symbols-outlined text-sm">arrow_back</span> Back
+      </button>
+      <div class="flex items-center gap-3 mb-4">
+        <div class="size-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary shrink-0">
+          <span class="material-symbols-outlined">campaign</span>
+        </div>
+        <div>
+          <p class="text-sm font-bold text-slate-900 dark:text-slate-100">System Maintenance Tonight</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">2 hours ago · System</p>
+        </div>
+      </div>
+      <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">The portal will be offline for scheduled security updates tonight from <strong>22:00 to 02:00</strong>. Please save all pending reports and log out before the maintenance window begins. The system will be automatically restored after the update.</p>
+    </div>
+    <div id="notif-detail-2" class="notif-detail hidden p-6">
+      <button onclick="backToNotifList()" class="flex items-center gap-1 text-xs text-primary font-semibold mb-4 hover:underline">
+        <span class="material-symbols-outlined text-sm">arrow_back</span> Back
+      </button>
+      <div class="flex items-center gap-3 mb-4">
+        <div class="size-10 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600 shrink-0">
+          <span class="material-symbols-outlined">assignment_late</span>
+        </div>
+        <div>
+          <p class="text-sm font-bold text-slate-900 dark:text-slate-100">Action Required: Operational Protocol v4.2</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Yesterday · Documents</p>
+        </div>
+      </div>
+      <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">You have a pending document that requires your signature. <strong>Operational Protocol v4.2</strong> must be reviewed and signed before end of this week to maintain compliance.</p>
+      <button onclick="closeModal(); scrollToDocuments()" class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-colors">
+        <span class="material-symbols-outlined text-xl">edit</span> Go to Document
+      </button>
+    </div>
+    <div id="notif-detail-3" class="notif-detail hidden p-6">
+      <button onclick="backToNotifList()" class="flex items-center gap-1 text-xs text-primary font-semibold mb-4 hover:underline">
+        <span class="material-symbols-outlined text-sm">arrow_back</span> Back
+      </button>
+      <div class="flex items-center gap-3 mb-4">
+        <div class="size-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600 shrink-0">
+          <span class="material-symbols-outlined">event_available</span>
+        </div>
+        <div>
+          <p class="text-sm font-bold text-slate-900 dark:text-slate-100">RDO Request Approved</p>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">3 days ago · HR</p>
+        </div>
+      </div>
+      <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Your RDO request for <strong>personal leave on October 20, 2023</strong> has been approved by your manager. Your schedule has been updated accordingly.</p>
+    </div>
+    <!-- List view -->
+    <div id="modal-notif-list-view" class="divide-y divide-slate-100 dark:divide-slate-800 max-h-80 overflow-y-auto">
+      <div class="flex items-start gap-3 px-6 py-4 bg-blue-50/50 dark:bg-blue-900/10 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors" onclick="showNotifDetail('notif-detail-1')">
+        <div class="size-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary shrink-0 mt-0.5"><span class="material-symbols-outlined text-sm">campaign</span></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-slate-900 dark:text-slate-100">System Maintenance Tonight</p>
+          <p class="text-xs text-slate-500 mt-0.5">Portal offline from 22:00 to 02:00.</p>
+          <p class="text-[10px] text-slate-400 mt-1">2 hours ago</p>
+        </div>
+        <span class="size-2 bg-primary rounded-full shrink-0 mt-1.5"></span>
+      </div>
+      <div class="flex items-start gap-3 px-6 py-4 bg-blue-50/50 dark:bg-blue-900/10 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors" onclick="showNotifDetail('notif-detail-2')">
+        <div class="size-8 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600 shrink-0 mt-0.5"><span class="material-symbols-outlined text-sm">assignment_late</span></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-slate-900 dark:text-slate-100">Action Required: Operational Protocol v4.2</p>
+          <p class="text-xs text-slate-500 mt-0.5">Please review and sign the document.</p>
+          <p class="text-[10px] text-slate-400 mt-1">Yesterday</p>
+        </div>
+        <span class="size-2 bg-primary rounded-full shrink-0 mt-1.5"></span>
+      </div>
+      <div class="flex items-start gap-3 px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors" onclick="showNotifDetail('notif-detail-3')">
+        <div class="size-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600 shrink-0 mt-0.5"><span class="material-symbols-outlined text-sm">event_available</span></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-slate-900 dark:text-slate-100">RDO Request Approved</p>
+          <p class="text-xs text-slate-500 mt-0.5">Your personal leave for Oct 20 was approved.</p>
+          <p class="text-[10px] text-slate-400 mt-1">3 days ago</p>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+      <button onclick="closeModal()" class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors">Close</button>
+    </div>
+  </div>
+
+  <!-- Notification Preferences Modal -->
+  <div id="modal-notif-prefs" class="modal-content hidden w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+      <h3 class="text-base font-bold text-slate-900 dark:text-slate-100" data-i18n="modal.notifprefs.title">Notification Preferences</h3>
+      <button onclick="closeModal()" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+    </div>
+    <div class="p-6 flex flex-col gap-5">
+      <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="modal.notifprefs.subtitle">Choose which notifications you want to receive.</p>
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100" data-i18n="notifpref.system">System Announcements</p>
+            <p class="text-xs text-slate-500 mt-0.5" data-i18n="notifpref.system.sub">Maintenance, updates and outages</p>
+          </div>
+          <button id="np-system" onclick="toggleSwitch(this)" data-on="true" class="notif-switch relative w-11 h-6 rounded-full bg-primary transition-colors focus:outline-none">
+            <span class="absolute top-0.5 left-0.5 size-5 bg-white rounded-full shadow transition-transform translate-x-5"></span>
+          </button>
+        </div>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100" data-i18n="notifpref.docs">Document Actions</p>
+            <p class="text-xs text-slate-500 mt-0.5" data-i18n="notifpref.docs.sub">Signature requests and document updates</p>
+          </div>
+          <button id="np-docs" onclick="toggleSwitch(this)" data-on="true" class="notif-switch relative w-11 h-6 rounded-full bg-primary transition-colors focus:outline-none">
+            <span class="absolute top-0.5 left-0.5 size-5 bg-white rounded-full shadow transition-transform translate-x-5"></span>
+          </button>
+        </div>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100" data-i18n="notifpref.rdo">RDO Updates</p>
+            <p class="text-xs text-slate-500 mt-0.5" data-i18n="notifpref.rdo.sub">Approvals, rejections and reminders</p>
+          </div>
+          <button id="np-rdo" onclick="toggleSwitch(this)" data-on="true" class="notif-switch relative w-11 h-6 rounded-full bg-primary transition-colors focus:outline-none">
+            <span class="absolute top-0.5 left-0.5 size-5 bg-white rounded-full shadow transition-transform translate-x-5"></span>
+          </button>
+        </div>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100" data-i18n="notifpref.payslip">Payslip Available</p>
+            <p class="text-xs text-slate-500 mt-0.5" data-i18n="notifpref.payslip.sub">When a new payslip is issued</p>
+          </div>
+          <button id="np-payslip" onclick="toggleSwitch(this)" data-on="false" class="notif-switch relative w-11 h-6 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors focus:outline-none">
+            <span class="absolute top-0.5 left-0.5 size-5 bg-white rounded-full shadow transition-transform"></span>
+          </button>
+        </div>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100" data-i18n="notifpref.hr">HR Announcements</p>
+            <p class="text-xs text-slate-500 mt-0.5" data-i18n="notifpref.hr.sub">Leave policies and HR updates</p>
+          </div>
+          <button id="np-hr" onclick="toggleSwitch(this)" data-on="false" class="notif-switch relative w-11 h-6 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors focus:outline-none">
+            <span class="absolute top-0.5 left-0.5 size-5 bg-white rounded-full shadow transition-transform"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
+      <button onclick="cancelNotifPrefs()" class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors" data-i18n="btn.cancel">Cancel</button>
+      <button onclick="saveNotifPrefs()" class="px-4 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors" data-i18n="btn.saveprefs">Save Preferences</button>
+    </div>
+  </div>
+
+  <!-- Language Modal -->
+  <div id="modal-language" class="modal-content hidden w-full max-w-sm bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+      <h3 class="text-base font-bold text-slate-900 dark:text-slate-100" data-i18n="modal.language.title">Language</h3>
+      <button onclick="closeModal()" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+    </div>
+    <div class="p-2">
+      <button onclick="selectLanguage(this, 'EN', 'English')" data-code="EN" class="lang-option w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/5 border border-primary/20 text-left mb-1">
+        <span class="text-lg">🇺🇸</span>
+        <div class="flex-1"><p class="text-sm font-semibold text-slate-900 dark:text-slate-100">English</p></div>
+        <span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+      </button>
+      <button onclick="selectLanguage(this, 'PT', 'Português')" data-code="PT" class="lang-option w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-left mb-1 transition-colors">
+        <span class="text-lg">🇧🇷</span>
+        <div class="flex-1"><p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Português</p></div>
+        <span class="material-symbols-outlined text-slate-300 text-xl">radio_button_unchecked</span>
+      </button>
+      <button onclick="selectLanguage(this, 'ES', 'Español')" data-code="ES" class="lang-option w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-left mb-1 transition-colors">
+        <span class="text-lg">🇪🇸</span>
+        <div class="flex-1"><p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Español</p></div>
+        <span class="material-symbols-outlined text-slate-300 text-xl">radio_button_unchecked</span>
+      </button>
+    </div>
+    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+      <button onclick="closeModal()" class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors" data-i18n="modal.close">Close</button>
+    </div>
+  </div>
+
+  <!-- Security & Privacy Modal -->
+  <div id="modal-security" class="modal-content hidden w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+      <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Security & Privacy</h3>
+      <button onclick="closeModal()" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+    </div>
+    <div class="p-6 flex flex-col gap-5">
+      <!-- 2FA -->
+      <div class="flex items-start justify-between gap-4 pb-5 border-b border-slate-100 dark:border-slate-800">
+        <div>
+          <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Two-Factor Authentication</p>
+          <p class="text-xs text-slate-500 mt-0.5">Add an extra layer of security to your account</p>
+          <span id="tfa-badge" class="inline-block mt-1.5 text-[10px] font-bold text-amber-700 bg-amber-100 dark:bg-amber-900/30 dark:text-amber-400 px-2 py-0.5 rounded-full uppercase">Not Enabled</span>
+        </div>
+        <button id="tfa-toggle" onclick="toggle2FA(this)" data-on="false" class="notif-switch shrink-0 mt-1 relative w-11 h-6 rounded-full bg-slate-300 dark:bg-slate-600 transition-colors focus:outline-none">
+          <span class="absolute top-0.5 left-0.5 size-5 bg-white rounded-full shadow transition-transform"></span>
+        </button>
+      </div>
+      <!-- Active Sessions -->
+      <div class="pb-5 border-b border-slate-100 dark:border-slate-800">
+        <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">Active Sessions</p>
+        <div id="session-current" class="flex items-center justify-between bg-slate-50 dark:bg-slate-800 rounded-lg px-4 py-3 mb-2">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-xl">computer</span>
+            <div>
+              <p class="text-xs font-semibold text-slate-900 dark:text-slate-100">Windows · Chrome</p>
+              <p class="text-[10px] text-slate-500">Houston, TX · Current session</p>
+            </div>
+          </div>
+          <span class="text-[10px] font-bold text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full">Active</span>
+        </div>
+        <div id="session-iphone" class="flex items-center justify-between bg-slate-50 dark:bg-slate-800 rounded-lg px-4 py-3 transition-opacity">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-slate-400 text-xl">smartphone</span>
+            <div>
+              <p class="text-xs font-semibold text-slate-900 dark:text-slate-100">iPhone · Safari</p>
+              <p class="text-[10px] text-slate-500">Houston, TX · 2 days ago</p>
+            </div>
+          </div>
+          <button onclick="revokeSession('session-iphone', 'iPhone · Safari')" class="text-[10px] font-bold text-red-600 hover:underline">Revoke</button>
+        </div>
+        <p id="sessions-all-clear" class="hidden text-xs text-slate-400 text-center py-2">No other active sessions.</p>
+      </div>
+      <!-- Data Privacy -->
+      <div>
+        <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">Data & Privacy</p>
+        <div class="flex flex-col gap-2">
+          <button id="download-data-btn" onclick="downloadMyData()" class="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-300 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-slate-400 text-xl">download</span>
+            Download my data
+          </button>
+          <button onclick="requestDeletion()" class="flex items-center gap-3 text-sm text-red-600 hover:text-red-700 transition-colors">
+            <span class="material-symbols-outlined text-red-400 text-xl">delete_forever</span>
+            Request account deletion
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Deletion confirm banner (hidden by default) -->
+    <div id="deletion-confirm" class="hidden mx-6 mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+      <p class="text-xs font-semibold text-red-700 dark:text-red-400 mb-2">Are you sure? This action cannot be undone.</p>
+      <div class="flex gap-2">
+        <button onclick="confirmDeletion()" class="px-3 py-1.5 text-xs font-bold bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">Yes, delete my account</button>
+        <button onclick="document.getElementById('deletion-confirm').classList.add('hidden')" class="px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Cancel</button>
+      </div>
+    </div>
+    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
+      <button onclick="closeModal()" class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors">Close</button>
+      <button onclick="saveSecuritySettings()" class="px-4 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">Save Changes</button>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div id="modal-password" class="modal-content hidden w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+      <h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Change Password</h3>
+      <button onclick="closeModal()" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+    </div>
+    <form onsubmit="handlePasswordChange(event)" class="p-6 flex flex-col gap-4">
+      <!-- Demo hint -->
+      <div class="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs px-3 py-2 rounded-lg">
+        <span class="material-symbols-outlined text-base">info</span>
+        Demo: use <strong class="mx-1">inspesub123</strong> as current password
+      </div>
+      <!-- Feedback banners -->
+      <div id="pw-success" class="hidden items-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-sm font-semibold px-4 py-3 rounded-lg">
+        <span class="material-symbols-outlined text-xl">check_circle</span>
+        Password updated successfully!
+      </div>
+      <div id="pw-error" class="hidden items-center gap-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 text-sm font-semibold px-4 py-3 rounded-lg">
+        <span class="material-symbols-outlined text-xl">error</span>
+        <span id="pw-error-msg">Incorrect current password.</span>
+      </div>
+      <!-- Current Password -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Current Password</label>
+        <div class="relative">
+          <input id="pw-current" type="password" oninput="clearPwError()" class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-2 focus:ring-primary/20 h-11 px-4 pr-10 text-sm" placeholder="••••••••" required/>
+          <button type="button" onclick="togglePwVisibility('pw-current')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+            <span class="material-symbols-outlined text-xl">visibility</span>
+          </button>
+        </div>
+      </div>
+      <!-- New Password -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">New Password</label>
+        <div class="relative">
+          <input id="pw-new" type="password" oninput="checkStrength(this.value); checkConfirmMatch();" class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-2 focus:ring-primary/20 h-11 px-4 pr-10 text-sm" placeholder="••••••••" required/>
+          <button type="button" onclick="togglePwVisibility('pw-new')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+            <span class="material-symbols-outlined text-xl">visibility</span>
+          </button>
+        </div>
+        <!-- Strength meter -->
+        <div id="pw-strength-wrap" class="hidden flex-col gap-1.5 mt-1">
+          <div class="flex gap-1">
+            <div id="sb1" class="h-1.5 flex-1 rounded-full bg-slate-200 dark:bg-slate-700 transition-colors"></div>
+            <div id="sb2" class="h-1.5 flex-1 rounded-full bg-slate-200 dark:bg-slate-700 transition-colors"></div>
+            <div id="sb3" class="h-1.5 flex-1 rounded-full bg-slate-200 dark:bg-slate-700 transition-colors"></div>
+            <div id="sb4" class="h-1.5 flex-1 rounded-full bg-slate-200 dark:bg-slate-700 transition-colors"></div>
+          </div>
+          <p id="pw-strength-label" class="text-xs font-medium text-slate-500"></p>
+        </div>
+        <!-- Requirements checklist -->
+        <div id="pw-reqs" class="hidden grid grid-cols-2 gap-x-4 gap-y-1 mt-1">
+          <div id="req-len" class="flex items-center gap-1 text-xs text-slate-400">
+            <span class="material-symbols-outlined text-sm">remove</span>8+ characters
+          </div>
+          <div id="req-upper" class="flex items-center gap-1 text-xs text-slate-400">
+            <span class="material-symbols-outlined text-sm">remove</span>Uppercase letter
+          </div>
+          <div id="req-num" class="flex items-center gap-1 text-xs text-slate-400">
+            <span class="material-symbols-outlined text-sm">remove</span>Number
+          </div>
+          <div id="req-special" class="flex items-center gap-1 text-xs text-slate-400">
+            <span class="material-symbols-outlined text-sm">remove</span>Special character
+          </div>
+        </div>
+      </div>
+      <!-- Confirm Password -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Confirm New Password</label>
+        <div class="relative">
+          <input id="pw-confirm" type="password" oninput="checkConfirmMatch()" class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:border-primary focus:ring-2 focus:ring-primary/20 h-11 px-4 pr-10 text-sm" placeholder="••••••••" required/>
+          <button type="button" onclick="togglePwVisibility('pw-confirm')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+            <span class="material-symbols-outlined text-xl">visibility</span>
+          </button>
+        </div>
+        <p id="pw-match-msg" class="hidden text-xs font-medium mt-0.5"></p>
+      </div>
+      <div class="flex justify-end gap-3 pt-2">
+        <button type="button" onclick="closeModal()" class="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Cancel</button>
+        <button id="pw-submit-btn" type="submit" class="px-4 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2">
+          <span id="pw-submit-icon" class="material-symbols-outlined text-base">lock_reset</span>
+          Update Password
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Document View Modal -->
+  <div id="modal-doc-view" class="modal-content hidden w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+      <div class="flex items-center gap-3">
+        <span id="doc-view-icon" class="material-symbols-outlined text-primary text-2xl">description</span>
+        <div>
+          <p id="doc-view-name" class="font-bold text-sm text-slate-900 dark:text-slate-100"></p>
+          <p id="doc-view-meta" class="text-[11px] text-slate-400 mt-0.5"></p>
+        </div>
+      </div>
+      <button onclick="closeModal()" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400">
+        <span class="material-symbols-outlined text-base">close</span>
+      </button>
+    </div>
+    <div class="p-6">
+      <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-5 mb-5 font-mono text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap" id="doc-view-body"></div>
+      <div class="flex gap-2 justify-end">
+        <button onclick="docViewDownload()" class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">
+          <span class="material-symbols-outlined text-base">download</span> Download
+        </button>
+        <button onclick="closeModal()" class="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Document Sign Modal -->
+  <div id="modal-doc-sign" class="modal-content hidden w-full max-w-sm bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+      <p class="font-bold text-sm text-slate-900 dark:text-slate-100">Sign Document</p>
+      <button onclick="closeModal()" class="size-8 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400">
+        <span class="material-symbols-outlined text-base">close</span>
+      </button>
+    </div>
+    <div class="p-6 flex flex-col gap-4">
+      <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 text-xs text-amber-700 dark:text-amber-300">
+        <span class="font-bold block mb-1">Action Required</span>
+        <span id="doc-sign-name" class="font-semibold"></span> requires your electronic signature to confirm compliance with the updated operational protocols.
+      </div>
+      <div>
+        <label class="text-xs font-bold text-slate-500 uppercase block mb-1.5">Full Name (signature)</label>
+        <input id="doc-sign-input" type="text" placeholder="James Wilson" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/40"/>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="confirmDocSign()" class="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">
+          <span class="material-symbols-outlined text-base">draw</span> Sign & Submit
+        </button>
+        <button onclick="closeModal()" class="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Member Detail Modal -->
+  <div id="modal-member" class="modal-content hidden w-full max-w-sm bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+    <div id="member-header" class="h-20 flex items-end px-6 pb-4 relative">
+      <div id="member-avatar" class="size-14 rounded-full flex items-center justify-center font-bold text-lg text-white shrink-0 ring-4 ring-white dark:ring-slate-900"></div>
+      <div class="ml-3 pb-0.5">
+        <p id="member-name" class="text-base font-bold text-white"></p>
+        <p id="member-role" class="text-xs text-white/80"></p>
+      </div>
+      <button onclick="closeModal()" class="absolute top-3 right-3 size-7 flex items-center justify-center rounded-lg bg-white/20 hover:bg-white/30 text-white">
+        <span class="material-symbols-outlined text-base">close</span>
+      </button>
+    </div>
+    <div class="p-5 flex flex-col gap-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-3">
+          <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Status</p>
+          <p id="member-status" class="text-sm font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-1.5"></p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-3">
+          <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Location</p>
+          <p id="member-location" class="text-sm font-semibold text-slate-900 dark:text-slate-100"></p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-3">
+          <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Department</p>
+          <p id="member-dept" class="text-sm font-semibold text-slate-900 dark:text-slate-100"></p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-3">
+          <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Since</p>
+          <p id="member-since" class="text-sm font-semibold text-slate-900 dark:text-slate-100"></p>
+        </div>
+      </div>
+      <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-3">
+        <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Current Assignment</p>
+        <p id="member-assignment" class="text-sm font-semibold text-slate-900 dark:text-slate-100"></p>
+      </div>
+      <!-- Chat area (hidden until Message clicked) -->
+      <div id="member-chat" class="hidden flex-col gap-2">
+        <div id="chat-messages" class="bg-slate-50 dark:bg-slate-800 rounded-xl p-3 flex flex-col gap-2 min-h-[80px] max-h-40 overflow-y-auto text-sm"></div>
+        <div class="flex gap-2">
+          <input id="chat-input" type="text" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendMemberMessage()"
+            class="flex-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/40" />
+          <button onclick="sendMemberMessage()" class="size-9 flex items-center justify-center bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors shrink-0">
+            <span class="material-symbols-outlined text-base">send</span>
+          </button>
+        </div>
+      </div>
+      <div id="member-msg-btn" class="pt-1">
+        <button onclick="openMemberChat()" class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">
+          <span class="material-symbols-outlined text-base">mail</span> Message
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function openModal(id) {
+    document.getElementById('modal-backdrop').classList.remove('hidden');
+    document.getElementById('modal-backdrop').classList.add('flex');
+    document.getElementById(id).classList.remove('hidden');
+    if (id === 'modal-notif-prefs') _snapshotNotifPrefs();
+  }
+
+  function closeModal() {
+    document.getElementById('modal-backdrop').classList.add('hidden');
+    document.getElementById('modal-backdrop').classList.remove('flex');
+    document.querySelectorAll('.modal-content').forEach(m => m.classList.add('hidden'));
+    // Reset notification modal view
+    document.querySelectorAll('.notif-detail').forEach(d => d.classList.add('hidden'));
+    const listView = document.getElementById('modal-notif-list-view');
+    if (listView) listView.classList.remove('hidden');
+    // Reset profile modal to view mode
+    const profileEdit = document.getElementById('profile-edit');
+    if (profileEdit && !profileEdit.classList.contains('hidden')) cancelEditProfile();
+    // Reset password form
+    ['pw-current','pw-new','pw-confirm'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    ['pw-success','pw-error'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
+    });
+  }
+
+  function closeModalBackdrop(e) {
+    if (e.target === document.getElementById('modal-backdrop')) closeModal();
+  }
+
+  function scrollToDocuments() {
+    navigateTo('documents');
+  }
+
+  function navigateTo(id) {
+    // Payslips opens a modal instead of switching section
+    if (id === 'payslips') {
+      openModal('modal-payslips');
+      return;
+    }
+    // Hide all sections
+    document.querySelectorAll('.page-section').forEach(s => s.classList.add('hidden'));
+    // Show target
+    const target = document.getElementById('section-' + id);
+    if (target) target.classList.remove('hidden');
+    // Update nav active state
+    document.querySelectorAll('#sidebar-nav .nav-link').forEach(link => {
+      const isActive = link.dataset.nav === id;
+      link.classList.toggle('bg-primary', isActive);
+      link.classList.toggle('text-white', isActive);
+      link.classList.toggle('text-slate-600', !isActive);
+      link.classList.toggle('dark:text-slate-400', !isActive);
+      link.classList.toggle('hover:bg-slate-200', !isActive);
+      link.classList.toggle('dark:hover:bg-slate-800', !isActive);
+    });
+    // Scroll to top of main
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Build calendar if navigating there
+    if (id === 'calendar') buildCalendar();
+  }
+
+  // ---- Calendar state ----
+  const today = new Date();
+  let calYear = today.getFullYear();
+  let calMonth = today.getMonth();
+  // Seed events (stored as "YYYY-MM-DD" → [{title, type, note}])
+  const calEvents = {};
+  function calKey(y, m, d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+  function addEvent(y, m, d, title, type, note) {
+    const k = calKey(y, m, d);
+    if (!calEvents[k]) calEvents[k] = [];
+    calEvents[k].push({ title, type: type||'general', note: note||'' });
+  }
+  // Seed default events
+  addEvent(calYear, calMonth, 20, 'RDO — Personal Leave', 'rdo', 'Approved · Full day');
+  addEvent(calYear, calMonth, 25, 'Operational Protocol v4.2 Deadline', 'deadline', 'Action required · End of day');
+  addEvent(calYear, calMonth+1 > 11 ? 0 : calMonth+1, 1, 'Holiday RDO Submission Deadline', 'general', 'HR reminder');
+
+  const typeStyles = {
+    rdo:      { dot: 'bg-blue-100 text-blue-700',    card: 'bg-blue-50 dark:bg-blue-900/10 border-blue-100 dark:border-blue-900/30',   badge: 'text-blue-700 bg-blue-100', label: 'RDO' },
+    deadline: { dot: 'bg-amber-100 text-amber-700',  card: 'bg-amber-50 dark:bg-amber-900/10 border-amber-100 dark:border-amber-900/30', badge: 'text-amber-700 bg-amber-100', label: 'Deadline' },
+    meeting:  { dot: 'bg-indigo-100 text-indigo-700',card: 'bg-indigo-50 dark:bg-indigo-900/10 border-indigo-100 dark:border-indigo-900/30', badge: 'text-indigo-700 bg-indigo-100', label: 'Meeting' },
+    general:  { dot: 'bg-slate-100 text-slate-600',  card: 'bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700',     badge: 'text-slate-500 bg-slate-200 dark:bg-slate-700', label: 'Event' },
+  };
+
+  function buildCalendar() {
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('cal-month-label').textContent = `${MONTHS[calMonth]} ${calYear}`;
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+    const firstDay = new Date(calYear, calMonth, 1).getDay();
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    // Empty leading cells
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'h-16 border-b border-r border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20';
+      grid.appendChild(el);
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const key = calKey(calYear, calMonth, d);
+      const dayEvents = calEvents[key] || [];
+      const isToday = d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear();
+      const el = document.createElement('div');
+      el.className = 'h-16 border-b border-r border-slate-100 dark:border-slate-800 p-1.5 flex flex-col items-start cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors';
+      el.onclick = () => openNewEventForm(calYear, calMonth, d);
+      const dayNum = document.createElement('span');
+      dayNum.textContent = d;
+      dayNum.className = `text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full mb-1 ${isToday ? 'bg-primary text-white' : 'text-slate-700 dark:text-slate-300'}`;
+      el.appendChild(dayNum);
+      dayEvents.slice(0, 2).forEach(ev => {
+        const s = typeStyles[ev.type] || typeStyles.general;
+        const dot = document.createElement('span');
+        dot.textContent = ev.title.length > 12 ? ev.title.slice(0, 12) + '…' : ev.title;
+        dot.className = `text-[9px] font-bold px-1 py-0.5 rounded w-full truncate ${s.dot}`;
+        el.appendChild(dot);
+      });
+      if (dayEvents.length > 2) {
+        const more = document.createElement('span');
+        more.textContent = `+${dayEvents.length - 2} more`;
+        more.className = 'text-[9px] text-slate-400 px-1';
+        el.appendChild(more);
+      }
+      grid.appendChild(el);
+    }
+    renderUpcoming();
+  }
+
+  function renderUpcoming() {
+    const list = document.getElementById('upcoming-events-list');
+    const empty = document.getElementById('upcoming-empty');
+    list.innerHTML = '';
+    const MONTHS_SHORT = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    // Collect all future events sorted
+    const now = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const upcoming = [];
+    Object.entries(calEvents).forEach(([key, evs]) => {
+      const [y, m, d] = key.split('-').map(Number);
+      const dt = new Date(y, m-1, d);
+      if (dt >= now) evs.forEach(ev => upcoming.push({ dt, y, m: m-1, d, ...ev }));
+    });
+    upcoming.sort((a, b) => a.dt - b.dt);
+    if (!upcoming.length) { empty.classList.remove('hidden'); return; }
+    empty.classList.add('hidden');
+    upcoming.slice(0, 6).forEach(ev => {
+      const s = typeStyles[ev.type] || typeStyles.general;
+      const card = document.createElement('div');
+      card.className = `flex items-center gap-4 p-3 rounded-lg border ${s.card}`;
+      card.innerHTML = `
+        <div class="text-center min-w-[44px]">
+          <p class="text-xs font-bold" style="color:inherit">${MONTHS_SHORT[ev.m]}</p>
+          <p class="text-xl font-black">${ev.d}</p>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">${ev.title}</p>
+          ${ev.note ? `<p class="text-xs text-slate-500">${ev.note}</p>` : ''}
+        </div>
+        <span class="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full ${s.badge}">${s.label}</span>
+        <button onclick="deleteCalendarEvent('${calKey(ev.y,ev.m,ev.d)}','${ev.title.replace(/'/g,"\\'")}',this)" class="shrink-0 text-slate-300 hover:text-red-400 transition-colors" title="Remove">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>`;
+      list.appendChild(card);
+    });
+  }
+
+  function calShiftMonth(dir) {
+    calMonth += dir;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    if (calMonth < 0)  { calMonth = 11; calYear--; }
+    buildCalendar();
+  }
+
+  function openNewEventForm(y, m, d) {
+    const form = document.getElementById('new-event-form');
+    form.classList.remove('hidden');
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (y !== undefined) {
+      const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      document.getElementById('evt-date').value = dateStr;
+    }
+  }
+
+  function addCalendarEvent(e) {
+    e.preventDefault();
+    const title = document.getElementById('evt-title').value.trim();
+    const type  = document.getElementById('evt-type').value;
+    const date  = document.getElementById('evt-date').value;
+    const note  = document.getElementById('evt-note').value.trim();
+    if (!title || !date) return;
+    const [y, m, d] = date.split('-').map(Number);
+    addEvent(y, m-1, d, title, type, note);
+    document.getElementById('new-event-form').classList.add('hidden');
+    e.target.reset();
+    // Navigate calendar to the event's month
+    calYear = y; calMonth = m - 1;
+    buildCalendar();
+    showToast(`Event added: ${title}`, 'event_available', 'text-blue-400');
+  }
+
+  function deleteCalendarEvent(key, title, btn) {
+    if (!calEvents[key]) return;
+    calEvents[key] = calEvents[key].filter(ev => ev.title !== title);
+    if (!calEvents[key].length) delete calEvents[key];
+    buildCalendar();
+    showToast('Event removed', 'event_busy', 'text-slate-400');
+  }
+
+  // ---- RDO submit ----
+  function submitRDO(e) {
+    e.preventDefault();
+    const type = document.getElementById('rdo-type').value;
+    const start = document.getElementById('rdo-start').value;
+    const end = document.getElementById('rdo-end').value;
+    if (!start || !end) return;
+    const fmt = d => new Date(d + 'T00:00').toLocaleDateString('en-US', { month:'short', day:'2-digit', year:'numeric' });
+    const days = Math.max(1, Math.round((new Date(end) - new Date(start)) / 86400000) + 1);
+    const row = document.createElement('tr');
+    row.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/30';
+    row.innerHTML = `<td class="px-6 py-4 text-sm font-medium">${type}</td><td class="px-6 py-4 text-sm text-slate-500">${fmt(start)}</td><td class="px-6 py-4 text-sm text-slate-500">${fmt(end)}</td><td class="px-6 py-4 text-sm text-slate-500">${days}</td><td class="px-6 py-4"><span class="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 px-2.5 py-1 rounded text-xs font-bold">Pending</span></td>`;
+    document.getElementById('rdo-table-body').prepend(row);
+    document.getElementById('rdo-form').classList.add('hidden');
+    e.target.reset();
+    showToast(`RDO request submitted — ${type}`, 'event_available', 'text-blue-400');
+  }
+
+  // ---- My Team ----
+  const teamData = {
+    JW: { name:'James Wilson',  role:'Sub-inspector',   initials:'JW', color:'bg-primary',    dept:'Subsea Inspection', location:'Houston, TX',           status:'online',  since:'Jan 2021', assignment:'Q4 Inspection Cycle — Gulf of Mexico' },
+    MC: { name:'Maria Costa',   role:'Lead Inspector',  initials:'MC', color:'bg-indigo-500', dept:'Subsea Inspection', location:'Houston, TX',           status:'online',  since:'Mar 2019', assignment:'Field Supervision — Block 47' },
+    RB: { name:'Rafael Brandão',role:'ROV Pilot',       initials:'RB', color:'bg-amber-500',  dept:'ROV Operations',    location:'Offshore — Gulf of Mexico', status:'online',  since:'Jun 2020', assignment:'ROV Deployment — Platform Bravo' },
+    SO: { name:"Sarah O'Brien", role:'Safety Officer',  initials:'SO', color:'bg-green-600',  dept:'HSE',               location:'Houston, TX',           status:'offline', since:'Sep 2018', assignment:'Safety Audit Review — Q4' },
+    TN: { name:'Tiago Neves',   role:'Subsea Engineer', initials:'TN', color:'bg-red-500',    dept:'Engineering',       location:'Offshore — Gulf of Mexico', status:'online',  since:'Nov 2020', assignment:'Pipeline Integrity Assessment' },
+    KL: { name:'Karen Liu',     role:'Data Analyst',    initials:'KL', color:'bg-purple-500', dept:'Data & Reporting',  location:'Houston, TX',           status:'away',    since:'Feb 2022', assignment:'KPI Dashboard — Q4 Report' },
+  };
+
+  function openMemberDetail(id) {
+    const m = teamData[id];
+    if (!m) return;
+    // Header color
+    const header = document.getElementById('member-header');
+    header.className = `h-20 flex items-end px-6 pb-4 relative ${m.color}`;
+    // Avatar
+    const av = document.getElementById('member-avatar');
+    av.textContent = m.initials;
+    av.className = `size-14 rounded-full flex items-center justify-center font-bold text-lg text-white shrink-0 ring-4 ring-white dark:ring-slate-900 ${m.color} opacity-90`;
+    // Fields
+    document.getElementById('member-name').textContent = m.name;
+    document.getElementById('member-role').textContent = m.role;
+    document.getElementById('member-dept').textContent = m.dept;
+    document.getElementById('member-location').textContent = m.location;
+    document.getElementById('member-since').textContent = m.since;
+    document.getElementById('member-assignment').textContent = m.assignment;
+    const statusEl = document.getElementById('member-status');
+    const statusMap = { online:['bg-green-500','Online'], offline:['bg-slate-300','Offline'], away:['bg-amber-400','Away'] };
+    const [sc, sl] = statusMap[m.status] || statusMap.offline;
+    statusEl.innerHTML = `<span class="size-2 rounded-full ${sc} shrink-0"></span>${sl}`;
+    openModal('modal-member');
+  }
+
+  function filterTeam(q) {
+    const cards = document.querySelectorAll('.team-card');
+    let visible = 0;
+    cards.forEach(c => {
+      const match = c.dataset.name.toLowerCase().includes(q.toLowerCase()) || c.dataset.role.toLowerCase().includes(q.toLowerCase());
+      c.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('team-empty').classList.toggle('hidden', visible > 0);
+  }
+
+  function openMemberChat() {
+    document.getElementById('member-msg-btn').classList.add('hidden');
+    const chat = document.getElementById('member-chat');
+    chat.classList.remove('hidden');
+    chat.classList.add('flex');
+    document.getElementById('chat-input').focus();
+  }
+
+  function sendMemberMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+    const name = document.getElementById('member-name').textContent;
+    const box = document.getElementById('chat-messages');
+    // User bubble
+    const userBubble = document.createElement('div');
+    userBubble.className = 'self-end bg-primary text-white text-xs rounded-xl rounded-br-sm px-3 py-2 max-w-[80%]';
+    userBubble.textContent = text;
+    box.appendChild(userBubble);
+    input.value = '';
+    box.scrollTop = box.scrollHeight;
+    // Auto-reply after short delay
+    setTimeout(() => {
+      const replies = [
+        `Got it, thanks!`,
+        `I'll look into that.`,
+        `Roger, on it.`,
+        `Noted — will follow up.`,
+        `Thanks for reaching out!`,
+      ];
+      const replyBubble = document.createElement('div');
+      replyBubble.className = 'self-start bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-800 dark:text-slate-100 text-xs rounded-xl rounded-bl-sm px-3 py-2 max-w-[80%]';
+      replyBubble.innerHTML = `<span class="font-semibold text-[10px] text-slate-400 block mb-0.5">${name}</span>${replies[Math.floor(Math.random()*replies.length)]}`;
+      box.appendChild(replyBubble);
+      box.scrollTop = box.scrollHeight;
+    }, 900);
+  }
+
+  // reset chat when modal closes
+  const _origCloseModal = closeModal;
+  closeModal = function() {
+    const chat = document.getElementById('member-chat');
+    chat.classList.add('hidden');
+    chat.classList.remove('flex');
+    document.getElementById('member-msg-btn').classList.remove('hidden');
+    document.getElementById('chat-messages').innerHTML = '';
+    document.getElementById('chat-input').value = '';
+    _origCloseModal();
+  };
+
+  // ---- Dashboard doc download ----
+  function dashboardDownload(name, date, status) {
+    const content = [
+      'INSPESUB Portal — Document Export',
+      '====================================',
+      `Document: ${name}`,
+      `Date:     ${date}`,
+      `Status:   ${status}`,
+      `Employee: James Wilson`,
+      ``,
+      `Generated: ${new Date().toLocaleString()}`,
+    ].join('\n');
+    const blob = new Blob([content], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name.replace(/\s+/g, '_') + '.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast(`${name} downloaded`, 'download_done', 'text-green-400');
+  }
+
+  // ---- Document search ----
+  function filterDocs(query) {
+    const rows = document.querySelectorAll('.doc-row');
+    const q = query.toLowerCase();
+    let visible = 0;
+    rows.forEach(row => {
+      const match = row.textContent.toLowerCase().includes(q);
+      row.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('docs-empty').classList.toggle('hidden', visible > 0);
+  }
+
+  // ---- Documents actions ----
+  let _currentDocDownload = null;
+  function docAction(name, type, date, status, action) {
+    if (action === 'download') {
+      const content = [
+        'INSPESUB Portal — Document Export',
+        '====================================',
+        `Document: ${name}`,
+        `Type:     ${type}`,
+        `Date:     ${date}`,
+        `Status:   ${status}`,
+        `Employee: James Wilson`,
+        ``,
+        `Generated: ${new Date().toLocaleString()}`,
+        ``,
+        `[Document content is confidential and for authorized personnel only]`,
+      ].join('\n');
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url;
+      a.download = name.replace(/\s+/g, '_') + '.txt'; a.click();
+      URL.revokeObjectURL(url);
+      showToast(`${name} downloaded`, 'download_done', 'text-green-400');
+    } else if (action === 'view') {
+      const body = [
+        `Document: ${name}`,
+        `Type:     ${type}`,
+        `Date:     ${date}`,
+        `Status:   ${status}`,
+        `Employee: James Wilson`,
+        ``,
+        `───────────────────────────────────────`,
+        ``,
+        type === 'RDO'
+          ? `Leave Request Details\nRequested Days: 5\nPeriod: ${date} – Oct 25, 2023\nReason: Personal Leave\nApproved by: Maria Costa (Lead Inspector)\nApproval Date: ${date}`
+          : `This document has been reviewed and processed.\nAll required fields have been completed.\nCompliance confirmed by authorized personnel.`,
+      ].join('\n');
+      document.getElementById('doc-view-name').textContent = name;
+      document.getElementById('doc-view-meta').textContent = `${type} · ${date} · ${status}`;
+      document.getElementById('doc-view-icon').textContent = type === 'RDO' ? 'event_busy' : 'description';
+      document.getElementById('doc-view-body').textContent = body;
+      _currentDocDownload = { name, type, date, status, body };
+      openModal('modal-doc-view');
+    } else if (action === 'sign') {
+      document.getElementById('doc-sign-name').textContent = name;
+      document.getElementById('doc-sign-input').value = '';
+      openModal('modal-doc-sign');
+    }
+  }
+
+  function docViewDownload() {
+    if (!_currentDocDownload) return;
+    const d = _currentDocDownload;
+    const blob = new Blob([d.body], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url;
+    a.download = d.name.replace(/\s+/g, '_') + '.txt'; a.click();
+    URL.revokeObjectURL(url);
+    showToast(`${d.name} downloaded`, 'download_done', 'text-green-400');
+    closeModal();
+  }
+
+  function confirmDocSign() {
+    const sig = document.getElementById('doc-sign-input').value.trim();
+    if (!sig) { document.getElementById('doc-sign-input').focus(); return; }
+    const name = document.getElementById('doc-sign-name').textContent;
+    // Update status badge and button in table
+    const badge = document.getElementById('doc-sign-status');
+    if (badge) {
+      badge.className = 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2.5 py-1 rounded text-xs font-bold';
+      badge.textContent = 'Signed';
+    }
+    const btn = document.getElementById('doc-sign-btn');
+    if (btn) {
+      btn.onclick = () => docAction(name, 'Document', 'Oct 18, 2023', 'Signed', 'download');
+      btn.querySelector('span').textContent = 'download';
+    }
+    closeModal();
+    showToast(`${name} signed successfully`, 'draw', 'text-green-400');
+  }
+
+  // ---- Announcements ----
+  const _annAcknowledged = new Set();
+  function acknowledgeAnn(id, btn) {
+    if (_annAcknowledged.has(id)) return;
+    _annAcknowledged.add(id);
+    const card = document.querySelector(`.ann-card[data-id="${id}"]`);
+    btn.innerHTML = '<span class="material-symbols-outlined text-sm">check_circle</span> Acknowledged';
+    btn.className = 'flex items-center gap-1.5 px-3 py-1.5 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold rounded-lg cursor-default';
+    btn.onclick = null;
+    card.classList.add('opacity-60');
+    showToast('Announcement acknowledged', 'check_circle', 'text-green-400');
+  }
+
+  function dismissAnn(id) {
+    const card = document.querySelector(`.ann-card[data-id="${id}"]`);
+    if (!card) return;
+    card.style.transition = 'opacity 0.3s, max-height 0.4s';
+    card.style.opacity = '0';
+    card.style.maxHeight = card.offsetHeight + 'px';
+    setTimeout(() => { card.style.maxHeight = '0'; card.style.marginBottom = '0'; card.style.padding = '0'; }, 300);
+    setTimeout(() => card.remove(), 700);
+  }
+
+  function filterAnnouncements(cat) {
+    document.querySelectorAll('.ann-filter').forEach(btn => {
+      const active = btn.dataset.filter === cat;
+      btn.className = active
+        ? 'ann-filter px-3 py-1 rounded-full text-xs font-bold bg-primary text-white transition-colors'
+        : 'ann-filter px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors';
+    });
+    let visible = 0;
+    document.querySelectorAll('.ann-card').forEach(card => {
+      const match = cat === 'all' || card.dataset.category === cat;
+      card.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('ann-empty').classList.toggle('hidden', visible > 0);
+  }
+
+  function signOut() {
+    window.location.href = 'login.html';
+  }
+
+  // ─── Global Search ────────────────────────────────────────────────────────
+  const searchIndex = [
+    // ── Navigation
+    { type: 'nav', label: 'Dashboard', keywords: 'dashboard inicio home', icon: 'dashboard', action: () => navigateTo('dashboard') },
+    { type: 'nav', label: 'Calendário', keywords: 'calendar calendario eventos agenda schedule', icon: 'calendar_today', action: () => navigateTo('calendar') },
+    { type: 'nav', label: 'Payslips / Contracheques', keywords: 'payslip salario pagamento contracheque payment', icon: 'payments', action: () => navigateTo('payslips') },
+    { type: 'nav', label: 'Meu Time', keywords: 'team time equipe membros colaboradores pessoas my team', icon: 'group', action: () => navigateTo('myteam') },
+    { type: 'nav', label: 'RDOs', keywords: 'rdo folga licenca ferias leave absence request', icon: 'schedule', action: () => navigateTo('rdos') },
+    { type: 'nav', label: 'Documentos', keywords: 'documents documentos files arquivos relatorio report', icon: 'description', action: () => navigateTo('documents') },
+    { type: 'nav', label: 'Comunicados', keywords: 'announcements comunicados avisos noticias news notices', icon: 'campaign', action: () => navigateTo('announcements') },
+    // ── Documents
+    { type: 'doc', label: 'Relatório Mensal de Inspeção', sub: 'Documento · Out 22, 2023 · Assinado', icon: 'description', action: () => { navigateTo('documents'); } },
+    { type: 'doc', label: 'RDO - Licença Pessoal', sub: 'RDO · Out 20, 2023 · Aprovado', icon: 'event_busy', action: () => { navigateTo('documents'); } },
+    { type: 'doc', label: 'Protocolo Operacional v4.2', sub: 'Documento · Out 18, 2023 · Ação Necessária', icon: 'description', action: () => { navigateTo('documents'); } },
+    { type: 'doc', label: 'Auditoria de Conformidade Q3', sub: 'Documento · Out 15, 2023 · Arquivado', icon: 'description', action: () => { navigateTo('documents'); } },
+    { type: 'doc', label: 'Certificado de Treinamento de Segurança', sub: 'Documento · Set 10, 2023 · Assinado', icon: 'description', action: () => { navigateTo('documents'); } },
+    { type: 'doc', label: 'RDO - Férias Anuais', sub: 'RDO · Ago 14, 2023 · Concluído', icon: 'event_busy', action: () => { navigateTo('documents'); } },
+    // ── Team
+    { type: 'person', label: 'James Wilson', sub: 'Sub-inspector · Subsea Inspection', icon: 'person', action: () => openMemberDetail('JW') },
+    { type: 'person', label: 'Maria Costa', sub: 'Lead Inspector · Subsea Inspection', icon: 'person', action: () => openMemberDetail('MC') },
+    { type: 'person', label: 'Rafael Brandão', sub: 'ROV Pilot · ROV Operations', icon: 'person', action: () => openMemberDetail('RB') },
+    { type: 'person', label: "Sarah O'Brien", sub: 'Safety Officer · Safety & Compliance', icon: 'person', action: () => openMemberDetail('SO') },
+    { type: 'person', label: 'Tiago Neves', sub: 'Subsea Engineer · Engineering', icon: 'person', action: () => openMemberDetail('TN') },
+    { type: 'person', label: 'Karen Liu', sub: 'Data Analyst · Data & Reporting', icon: 'person', action: () => openMemberDetail('KL') },
+    // ── Announcements
+    { type: 'ann', label: 'Aviso de Manutenção do Sistema', sub: 'Urgente · 2h atrás', icon: 'campaign', action: () => navigateTo('announcements') },
+    { type: 'ann', label: 'Novas Diretrizes Operacionais', sub: 'Geral · Ontem', icon: 'campaign', action: () => navigateTo('announcements') },
+    { type: 'ann', label: 'Aplicações de RDO para Férias', sub: 'RH · 3 dias atrás', icon: 'campaign', action: () => navigateTo('announcements') },
+    { type: 'ann', label: 'Atualização de Segurança Obrigatória Q4', sub: 'Segurança · 1 semana atrás', icon: 'campaign', action: () => navigateTo('announcements') },
+    { type: 'ann', label: 'Novo Equipamento ROV Implantado', sub: 'Geral · 2 semanas atrás', icon: 'campaign', action: () => navigateTo('announcements') },
+    // ── Actions / Settings
+    { type: 'action', label: 'Alterar Senha', keywords: 'senha password change alterar mudar', icon: 'lock_reset', action: () => openModal('modal-password') },
+    { type: 'action', label: 'Preferências de Notificação', keywords: 'notificacao notification preferencia preference', icon: 'notifications_active', action: () => openModal('modal-notif-prefs') },
+    { type: 'action', label: 'Idioma / Language', keywords: 'idioma language lingua en pt es', icon: 'language', action: () => openModal('modal-language') },
+    { type: 'action', label: 'Segurança & Privacidade', keywords: 'seguranca privacidade security privacy 2fa', icon: 'security', action: () => openModal('modal-security') },
+    { type: 'action', label: 'Modo Escuro', keywords: 'dark mode escuro tema theme', icon: 'dark_mode', action: () => toggleDarkMode() },
+    { type: 'action', label: 'Sair / Sign Out', keywords: 'logout sair exit signout', icon: 'logout', action: () => signOut() },
+    { type: 'action', label: 'Meus Documentos', keywords: 'meus documentos my documents arquivo', icon: 'folder_open', action: () => openModal('modal-docs') },
+    { type: 'action', label: 'Novo Evento no Calendário', keywords: 'novo evento calendar add criar', icon: 'event', action: () => { navigateTo('calendar'); setTimeout(() => document.getElementById('open-event-form-btn')?.click(), 400); } },
+  ];
+
+  const typeLabels = {
+    nav:    { label: 'Seções',      color: 'text-primary bg-primary/10' },
+    doc:    { label: 'Documentos',  color: 'text-slate-600 bg-slate-100 dark:bg-slate-800 dark:text-slate-300' },
+    person: { label: 'Pessoas',     color: 'text-indigo-700 bg-indigo-100 dark:bg-indigo-900/30 dark:text-indigo-300' },
+    ann:    { label: 'Comunicados', color: 'text-amber-700 bg-amber-100 dark:bg-amber-900/30 dark:text-amber-300' },
+    action: { label: 'Ações',       color: 'text-green-700 bg-green-100 dark:bg-green-900/30 dark:text-green-300' },
+  };
+
+  let _searchResults = [];
+  let _searchFocusIdx = -1;
+
+  function globalSearch(q) {
+    const dropdown = document.getElementById('search-dropdown');
+    const list = document.getElementById('search-results-list');
+    const empty = document.getElementById('search-empty');
+    q = q.trim().toLowerCase();
+    if (!q) { dropdown.classList.add('hidden'); return; }
+    const matches = searchIndex.filter(item => {
+      const haystack = (item.label + ' ' + (item.sub||'') + ' ' + (item.keywords||'')).toLowerCase();
+      return haystack.includes(q);
+    }).slice(0, 12);
+    _searchResults = matches;
+    _searchFocusIdx = -1;
+    list.innerHTML = '';
+    if (!matches.length) {
+      empty.classList.remove('hidden');
+      list.innerHTML = '';
+    } else {
+      empty.classList.add('hidden');
+      // Group by type
+      const groups = {};
+      matches.forEach(r => { if (!groups[r.type]) groups[r.type] = []; groups[r.type].push(r); });
+      Object.entries(groups).forEach(([type, items]) => {
+        const tl = typeLabels[type];
+        const header = document.createElement('div');
+        header.className = 'px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800';
+        header.textContent = tl.label;
+        list.appendChild(header);
+        items.forEach((item, i) => {
+          const idx = _searchResults.indexOf(item);
+          const row = document.createElement('button');
+          row.type = 'button';
+          row.dataset.idx = idx;
+          row.className = 'search-result-row w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-left transition-colors';
+          row.innerHTML = `
+            <div class="size-8 rounded-lg flex items-center justify-center shrink-0 ${tl.color}">
+              <span class="material-symbols-outlined text-base">${item.icon}</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">${item.label}</p>
+              ${item.sub ? `<p class="text-xs text-slate-400 truncate">${item.sub}</p>` : ''}
+            </div>
+            <span class="material-symbols-outlined text-slate-300 text-base shrink-0">chevron_right</span>`;
+          row.onclick = () => { execSearch(idx); };
+          list.appendChild(row);
+        });
+      });
+    }
+    dropdown.classList.remove('hidden');
+  }
+
+  function execSearch(idx) {
+    const item = _searchResults[idx];
+    if (!item) return;
+    document.getElementById('global-search').value = '';
+    document.getElementById('search-dropdown').classList.add('hidden');
+    item.action();
+  }
+
+  function searchKeyNav(e) {
+    const rows = document.querySelectorAll('.search-result-row');
+    if (!rows.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      _searchFocusIdx = Math.min(_searchFocusIdx + 1, rows.length - 1);
+      rows.forEach((r, i) => r.classList.toggle('bg-slate-100', i === _searchFocusIdx));
+      rows[_searchFocusIdx]?.scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      _searchFocusIdx = Math.max(_searchFocusIdx - 1, 0);
+      rows.forEach((r, i) => r.classList.toggle('bg-slate-100', i === _searchFocusIdx));
+      rows[_searchFocusIdx]?.scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter' && _searchFocusIdx >= 0) {
+      e.preventDefault();
+      execSearch(parseInt(rows[_searchFocusIdx].dataset.idx));
+    } else if (e.key === 'Escape') {
+      document.getElementById('search-dropdown').classList.add('hidden');
+      document.getElementById('global-search').blur();
+    }
+  }
+
+  // Close search on outside click
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#search-wrapper'))
+      document.getElementById('search-dropdown').classList.add('hidden');
+  });
+
+  function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown-panel').forEach(d => d.classList.add('hidden'));
+  }
+
+  function clearPwError() {
+    const error = document.getElementById('pw-error');
+    error.classList.add('hidden'); error.classList.remove('flex');
+  }
+
+  function checkStrength(val) {
+    const wrap = document.getElementById('pw-strength-wrap');
+    const reqs = document.getElementById('pw-reqs');
+    if (!val) {
+      wrap.classList.add('hidden'); wrap.classList.remove('flex');
+      reqs.classList.add('hidden'); reqs.classList.remove('grid');
+      return;
+    }
+    wrap.classList.remove('hidden'); wrap.classList.add('flex');
+    reqs.classList.remove('hidden'); reqs.classList.add('grid');
+
+    const hasLen = val.length >= 8;
+    const hasUpper = /[A-Z]/.test(val);
+    const hasNum = /[0-9]/.test(val);
+    const hasSpecial = /[^A-Za-z0-9]/.test(val);
+    const score = [hasLen, hasUpper, hasNum, hasSpecial].filter(Boolean).length;
+
+    // Update requirement items
+    function setReq(id, met) {
+      const el = document.getElementById(id);
+      const icon = el.querySelector('.material-symbols-outlined');
+      if (met) {
+        el.className = 'flex items-center gap-1 text-xs text-green-600 dark:text-green-400';
+        icon.textContent = 'check';
+      } else {
+        el.className = 'flex items-center gap-1 text-xs text-slate-400';
+        icon.textContent = 'remove';
+      }
+    }
+    setReq('req-len', hasLen);
+    setReq('req-upper', hasUpper);
+    setReq('req-num', hasNum);
+    setReq('req-special', hasSpecial);
+
+    // Strength bars
+    const colors = ['', 'bg-red-500', 'bg-orange-400', 'bg-yellow-400', 'bg-green-500'];
+    const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+    const labelColors = ['', 'text-red-500', 'text-orange-400', 'text-yellow-500', 'text-green-600'];
+    for (let i = 1; i <= 4; i++) {
+      const bar = document.getElementById('sb' + i);
+      bar.className = 'h-1.5 flex-1 rounded-full transition-colors ' + (i <= score ? colors[score] : 'bg-slate-200 dark:bg-slate-700');
+    }
+    const lbl = document.getElementById('pw-strength-label');
+    lbl.textContent = score ? labels[score] : '';
+    lbl.className = 'text-xs font-medium ' + (score ? labelColors[score] : 'text-slate-500');
+  }
+
+  function checkConfirmMatch() {
+    const newPw = document.getElementById('pw-new').value;
+    const confirmPw = document.getElementById('pw-confirm').value;
+    const msg = document.getElementById('pw-match-msg');
+    if (!confirmPw) { msg.classList.add('hidden'); return; }
+    msg.classList.remove('hidden');
+    if (newPw === confirmPw) {
+      msg.textContent = '✓ Passwords match';
+      msg.className = 'text-xs font-medium mt-0.5 text-green-600 dark:text-green-400';
+    } else {
+      msg.textContent = '✗ Passwords do not match';
+      msg.className = 'text-xs font-medium mt-0.5 text-red-500 dark:text-red-400';
+    }
+  }
+
+  function handlePasswordChange(e) {
+    e.preventDefault();
+    const currentPw = document.getElementById('pw-current').value;
+    const newPw = document.getElementById('pw-new').value;
+    const confirmPw = document.getElementById('pw-confirm').value;
+    const success = document.getElementById('pw-success');
+    const error = document.getElementById('pw-error');
+    const errorMsg = document.getElementById('pw-error-msg');
+    const btn = document.getElementById('pw-submit-btn');
+    const btnIcon = document.getElementById('pw-submit-icon');
+
+    error.classList.add('hidden'); error.classList.remove('flex');
+    success.classList.add('hidden'); success.classList.remove('flex');
+
+    if (currentPw !== 'inspesub123') {
+      errorMsg.textContent = 'Incorrect current password.';
+      error.classList.remove('hidden'); error.classList.add('flex');
+      document.getElementById('pw-current').focus();
+      return;
+    }
+    if (newPw !== confirmPw) {
+      errorMsg.textContent = 'New passwords do not match.';
+      error.classList.remove('hidden'); error.classList.add('flex');
+      return;
+    }
+    // Check strength >= Fair (score >= 2)
+    const hasLen = newPw.length >= 8;
+    const hasUpper = /[A-Z]/.test(newPw);
+    const hasNum = /[0-9]/.test(newPw);
+    const hasSpecial = /[^A-Za-z0-9]/.test(newPw);
+    const score = [hasLen, hasUpper, hasNum, hasSpecial].filter(Boolean).length;
+    if (score < 2) {
+      errorMsg.textContent = 'Password is too weak. Please meet more requirements.';
+      error.classList.remove('hidden'); error.classList.add('flex');
+      return;
+    }
+
+    // Loading state
+    btn.disabled = true;
+    btn.classList.add('opacity-75', 'cursor-not-allowed');
+    btnIcon.textContent = 'hourglass_top';
+
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.classList.remove('opacity-75', 'cursor-not-allowed');
+      btnIcon.textContent = 'lock_reset';
+      success.classList.remove('hidden'); success.classList.add('flex');
+      ['pw-current','pw-new','pw-confirm'].forEach(id => document.getElementById(id).value = '');
+      checkStrength('');
+      document.getElementById('pw-match-msg').classList.add('hidden');
+      setTimeout(() => closeModal(), 1500);
+    }, 900);
+  }
+
+  function togglePwVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  // ESC to close modal
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+</body></html>

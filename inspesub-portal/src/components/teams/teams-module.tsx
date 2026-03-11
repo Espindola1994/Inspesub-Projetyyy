@@ -65,9 +65,28 @@ export function TeamsModule({ teams: initialTeams, isAdmin, supervisors, employe
         body: JSON.stringify(form),
       })
       if (res.ok) {
+        const { data: created } = await res.json()
+        const supervisor = supervisors.find((s) => s.id === form.supervisorId) ?? null
+
+        // Immediately prepend the new team to local state — no refresh needed
+        const newTeam: Team = {
+          id: created.id,
+          name: created.name,
+          code: created.code,
+          description: created.description,
+          operation: created.operation,
+          isActive: true,
+          supervisor: supervisor ? { id: supervisor.id, name: supervisor.name } : null,
+          members: [],
+          _count: { members: 0, rdoRecords: 0 },
+        }
+        setLocalTeams((prev) => [newTeam, ...prev])
         setCreateOpen(false)
         setForm({ name: "", code: "", description: "", operation: "", supervisorId: "" })
         router.refresh()
+      } else {
+        const err = await res.json().catch(() => ({}))
+        alert(err.error ?? "Erro ao criar equipe")
       }
     } finally {
       setSaving(false)

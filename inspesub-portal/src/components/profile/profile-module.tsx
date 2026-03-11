@@ -67,21 +67,34 @@ export function ProfileModule({ user, teamMembership }: ProfileModuleProps) {
   }
 
   async function handleAvatarSave() {
-    if (!pendingAvatarFile) return
+    if (!pendingAvatarFile || !pendingAvatarPreview) return
+
+    // Capture locals before any state resets
+    const fileToUpload = pendingAvatarFile
+    const previewToShow = pendingAvatarPreview
+
+    // Immediately show the blob preview in the avatar — no visual gap
+    setAvatarUrl(previewToShow)
+    setPendingAvatarFile(null)
+    setPendingAvatarPreview(null)
     setUploadingAvatar(true)
+
     try {
       const fd = new FormData()
-      fd.append("file", pendingAvatarFile)
+      fd.append("file", fileToUpload)
       const res = await fetch("/api/users/avatar", { method: "POST", body: fd })
       const json = await res.json()
-      if (res.ok) {
-        // Use the server URL after a successful upload
-        setAvatarUrl(json.avatarUrl ?? pendingAvatarPreview)
-        setPendingAvatarFile(null)
-        setPendingAvatarPreview(null)
-      } else {
-        alert(json.error ?? "Erro ao enviar foto")
+      if (res.ok && json.avatarUrl) {
+        // Replace blob URL with the permanent Supabase URL
+        setAvatarUrl(json.avatarUrl)
+      } else if (!res.ok) {
+        // Revert on error
+        setAvatarUrl(null)
+        alert(json.error ?? "Erro ao salvar foto")
       }
+    } catch {
+      setAvatarUrl(null)
+      alert("Erro de conexão ao salvar foto")
     } finally {
       setUploadingAvatar(false)
     }

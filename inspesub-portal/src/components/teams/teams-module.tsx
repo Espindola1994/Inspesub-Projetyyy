@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { createPortal } from "react-dom"
 import { useRouter } from "next/navigation"
 import { getInitials } from "@/lib/utils"
 import { Users, Plus, Search, Building, UserPlus, X, ChevronDown, ChevronUp, Trash2 } from "lucide-react"
@@ -312,8 +313,8 @@ export function TeamsModule({ teams: initialTeams, isAdmin, supervisors, employe
       </div>
 
       {/* Create Team Modal */}
-      {createOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setCreateOpen(false)}>
+      {createOpen && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50" onClick={() => setCreateOpen(false)}>
           <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
 
             {/* Header */}
@@ -389,7 +390,8 @@ export function TeamsModule({ teams: initialTeams, isAdmin, supervisors, employe
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )

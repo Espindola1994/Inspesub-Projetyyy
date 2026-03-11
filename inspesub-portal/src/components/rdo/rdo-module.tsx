@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { createPortal } from "react-dom"
 import { useRouter } from "next/navigation"
 import { formatDate } from "@/lib/utils"
 import { ClipboardList, Plus, Eye, CheckCircle, X, Filter, Search, FileText, Clock, AlertCircle } from "lucide-react"
@@ -189,8 +190,8 @@ export function RdoModule({ rdos, teams, isAdmin, isSupervisor, currentUserId, c
       </div>
 
       {/* Create RDO Modal */}
-      {createOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setCreateOpen(false)}>
+      {createOpen && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50" onClick={() => setCreateOpen(false)}>
           <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="shrink-0 flex items-center justify-between p-6 pb-4">
               <h3 className="text-base font-semibold text-[#1F2937]">{t('rdo_new_title')}</h3>
@@ -284,12 +285,13 @@ export function RdoModule({ rdos, teams, isAdmin, isSupervisor, currentUserId, c
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* View RDO Modal */}
-      {selectedRdo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setSelectedRdo(null)}>
+      {selectedRdo && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50" onClick={() => setSelectedRdo(null)}>
           <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="shrink-0 flex items-center justify-between p-6 pb-4 border-b border-[#F3F4F6]">
               <div>
@@ -372,7 +374,8 @@ export function RdoModule({ rdos, teams, isAdmin, isSupervisor, currentUserId, c
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { createPortal } from "react-dom"
 import { useRouter } from "next/navigation"
 import { formatDate } from "@/lib/utils"
 import { FolderOpen, Plus, Search, Filter, Eye, Download, AlertTriangle, X, FileText } from "lucide-react"
@@ -233,8 +234,8 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
       )}
 
       {/* Upload Modal */}
-      {uploadOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setUploadOpen(false)}>
+      {uploadOpen && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50" onClick={() => setUploadOpen(false)}>
           <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="shrink-0 flex items-center justify-between p-6 pb-4">
               <h3 className="text-base font-semibold text-[#1F2937]">{t('doc_add_title')}</h3>
@@ -304,7 +305,8 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )

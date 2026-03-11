@@ -15,7 +15,7 @@ const PORTAL_PREFIXES = [
   "/usuarios", "/relatorios", "/auditoria", "/configuracoes",
 ]
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Rotas públicas — sem verificação

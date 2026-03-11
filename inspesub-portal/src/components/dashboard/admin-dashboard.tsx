@@ -150,7 +150,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#F3F4F6]">
             <div className="flex items-center gap-2">
               <Activity className="w-3.5 h-3.5 text-[#0059A0]" />
-              <h2 className="text-xs font-semibold text-[#1F2937]">{t('dash_recent_activity')}</h2>
+              <h2 className="text-sm font-semibold text-[#1F2937]">{t('dash_recent_activity')}</h2>
             </div>
             <Link href="/auditoria" className="text-xs text-[#0059A0] hover:underline flex items-center gap-1">
               {t('action_see_logs')}
@@ -186,7 +186,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#F3F4F6]">
             <div className="flex items-center gap-2">
               <Bell className="w-3.5 h-3.5 text-[#0059A0]" />
-              <h2 className="text-xs font-semibold text-[#1F2937]">{t('nav_announcements')}</h2>
+              <h2 className="text-sm font-semibold text-[#1F2937]">{t('nav_announcements')}</h2>
             </div>
             <Link href="/comunicados" className="text-xs text-[#0059A0] hover:underline flex items-center gap-1">
               Gerenciar

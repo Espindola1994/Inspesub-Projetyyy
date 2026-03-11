@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useAvatar } from "@/components/providers/avatar-provider"
 import { useLanguage } from "@/components/providers/language-provider"
+import { useNotifications } from "@/components/providers/notification-provider"
 import type { Locale } from "@/lib/i18n"
 
 interface HeaderProps {
@@ -21,6 +22,7 @@ export function Header({ onMenuToggle, pageTitle }: HeaderProps) {
   const { data: session } = useSession()
   const { avatarUrl } = useAvatar()
   const { t, locale, setLocale } = useLanguage()
+  const { unreadCount } = useNotifications()
   const router = useRouter()
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [langMenuOpen, setLangMenuOpen] = useState(false)
@@ -211,7 +213,11 @@ export function Header({ onMenuToggle, pageTitle }: HeaderProps) {
       {/* Notifications */}
       <Link href="/notificacoes" className="relative p-2 rounded-lg hover:bg-[#F5F8FB] text-[#6B7280] transition-colors">
         <Bell className="w-4 h-4" />
-        <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#FF7A2F] rounded-full" />
+        {unreadCount > 0 && (
+          <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 bg-[#FF7A2F] text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5 leading-none">
+            {unreadCount > 99 ? "99+" : unreadCount}
+          </span>
+        )}
       </Link>
 
       {/* User menu */}

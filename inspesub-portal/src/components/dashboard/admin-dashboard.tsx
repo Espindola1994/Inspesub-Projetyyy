@@ -171,7 +171,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
                       {AUDIT_ACTION_LABELS[log.action] ?? log.action}
                     </p>
                     <p className="text-xs text-[#6B7280] truncate">{log.description}</p>
-                    <p className="text-[11px] text-[#9CA3AF] mt-0.5">
+                    <p className="text-xs text-[#9CA3AF] mt-0.5">
                       {formatDateTime(log.createdAt)}
                     </p>
                   </div>
@@ -200,8 +200,8 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
               data.announcements.map((ann) => (
                 <div key={ann.id} className="px-4 py-3">
                   <p className="text-sm font-medium text-[#1F2937]">{ann.title}</p>
-                  <p className="text-[13px] text-[#6B7280] mt-0.5 line-clamp-2">{ann.content}</p>
-                  <p className="text-[11px] text-[#9CA3AF] mt-1">{formatDateTime(ann.createdAt)}</p>
+                  <p className="text-sm text-[#6B7280] mt-0.5 line-clamp-2">{ann.content}</p>
+                  <p className="text-xs text-[#9CA3AF] mt-1">{formatDateTime(ann.createdAt)}</p>
                 </div>
               ))
             )}

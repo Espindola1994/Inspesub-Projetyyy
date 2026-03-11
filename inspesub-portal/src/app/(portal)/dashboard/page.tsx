@@ -16,10 +16,22 @@ export default async function DashboardPage() {
 
   // Fetch data according to role
   if (role === "admin_master") {
-    const [totalUsers, pendingApprovals, teams, announcements, recentLogs] = await Promise.all([
+    const now = new Date()
+    const thisYear = now.getFullYear()
+    const thisMonth = now.getMonth() + 1 // 1-indexed
+    const in30Days = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
+
+    const [totalUsers, pendingApprovals, teams, payslipsThisMonth, expiringDocuments, rdoPending, announcements, recentLogs] = await Promise.all([
       db.user.count({ where: { status: "active" } }),
       db.user.count({ where: { status: "pending" } }),
       db.team.count({ where: { isActive: true } }),
+      db.payslip.count({ where: { year: thisYear, month: thisMonth } }),
+      db.document.count({
+        where: {
+          expiresAt: { gte: now, lte: in30Days },
+        },
+      }),
+      db.rdoRecord.count({ where: { status: "submitted" } }),
       db.announcement.findMany({
         where: { isPublished: true },
         include: { author: { select: { id: true, name: true, email: true, role: true, status: true } } },
@@ -41,9 +53,9 @@ export default async function DashboardPage() {
           totalTeams: teams,
           activeTeams: teams,
           monthAttendanceClosed: 0,
-          payslipsThisMonth: 0,
-          rdoPending: 0,
-          expiringDocuments: 0,
+          payslipsThisMonth,
+          rdoPending,
+          expiringDocuments,
           recentAuditLogs: recentLogs,
           announcements: announcements as any,
         }}

@@ -21,6 +21,8 @@ export function ProfileModule({ user, teamMembership }: ProfileModuleProps) {
   const [saving, setSaving] = useState(false)
   const { avatarUrl, setAvatarUrl } = useAvatar()
   const [uploadingAvatar, setUploadingAvatar] = useState(false)
+  const [pendingAvatarFile, setPendingAvatarFile] = useState<File | null>(null)
+  const [pendingAvatarPreview, setPendingAvatarPreview] = useState<string | null>(null)
   const [form, setForm] = useState({
     name: user.name,
     phone: user.profile?.phone ?? "",
@@ -54,26 +56,41 @@ export function ProfileModule({ user, teamMembership }: ProfileModuleProps) {
     }
   }
 
-  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
+    // Only create a local preview — don't upload yet
+    const previewUrl = URL.createObjectURL(file)
+    setPendingAvatarFile(file)
+    setPendingAvatarPreview(previewUrl)
+    e.target.value = ""
+  }
+
+  async function handleAvatarSave() {
+    if (!pendingAvatarFile) return
     setUploadingAvatar(true)
     try {
       const fd = new FormData()
-      fd.append("file", file)
+      fd.append("file", pendingAvatarFile)
       const res = await fetch("/api/users/avatar", { method: "POST", body: fd })
       const json = await res.json()
       if (res.ok) {
-        // Instant local preview, context updates header + sidebar immediately
-        const objectUrl = URL.createObjectURL(file)
-        setAvatarUrl(objectUrl)
+        // Use the server URL after a successful upload
+        setAvatarUrl(json.avatarUrl ?? pendingAvatarPreview)
+        setPendingAvatarFile(null)
+        setPendingAvatarPreview(null)
       } else {
         alert(json.error ?? "Erro ao enviar foto")
       }
     } finally {
       setUploadingAvatar(false)
-      e.target.value = ""
     }
+  }
+
+  function handleAvatarCancel() {
+    if (pendingAvatarPreview) URL.revokeObjectURL(pendingAvatarPreview)
+    setPendingAvatarFile(null)
+    setPendingAvatarPreview(null)
   }
 
   const role = ROLE_LABELS[user.role]
@@ -93,11 +110,11 @@ export function ProfileModule({ user, teamMembership }: ProfileModuleProps) {
           <div className="flex flex-col items-center text-center">
             <div className="relative group mb-4">
               <div className="w-20 h-20 rounded-full bg-[#0059A0] flex items-center justify-center overflow-hidden">
-                {avatarUrl ? (
+                {(pendingAvatarPreview ?? avatarUrl) ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    key={avatarUrl}
-                    src={avatarUrl}
+                    key={pendingAvatarPreview ?? avatarUrl}
+                    src={pendingAvatarPreview ?? avatarUrl ?? undefined}
                     alt={user.name}
                     className="w-full h-full object-cover"
                   />
@@ -124,6 +141,28 @@ export function ProfileModule({ user, teamMembership }: ProfileModuleProps) {
                 />
               </label>
             </div>
+
+            {/* Save / Cancel buttons after selecting a new photo */}
+            {pendingAvatarFile && !uploadingAvatar && (
+              <div className="flex gap-2 mb-3">
+                <button
+                  onClick={handleAvatarCancel}
+                  className="flex items-center gap-1 text-xs text-[#6B7280] border border-[#E5E7EB] px-3 py-1.5 rounded-lg hover:bg-[#F5F8FB] transition-colors"
+                >
+                  <X className="w-3.5 h-3.5" /> Cancelar
+                </button>
+                <button
+                  onClick={handleAvatarSave}
+                  className="flex items-center gap-1 text-xs text-white bg-emerald-500 hover:bg-emerald-600 px-3 py-1.5 rounded-lg transition-colors font-medium"
+                >
+                  <Save className="w-3.5 h-3.5" /> Salvar foto
+                </button>
+              </div>
+            )}
+            {uploadingAvatar && (
+              <p className="text-xs text-[#6B7280] mb-3 animate-pulse">Salvando foto...</p>
+            )}
+
             <h2 className="text-lg font-bold text-[#1F2937]">{user.name}</h2>
             <p className="text-sm text-[#6B7280]">{user.profile?.position ?? role}</p>
             <span className={`mt-2 text-xs px-3 py-1 rounded-full font-medium ${statusColors[user.status]}`}>

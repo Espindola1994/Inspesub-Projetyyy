@@ -9,7 +9,7 @@ const attendanceSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   status: z.enum([
     "worked", "day_off", "embarked", "disembarked",
-    "training", "vacation", "medical_leave", "justified_absence", "not_informed",
+    "training", "vacation", "medical_leave", "justified_absence", "hotel", "not_informed",
   ]),
   observation: z.string().nullable().optional(),
 })

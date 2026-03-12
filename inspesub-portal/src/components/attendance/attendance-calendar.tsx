@@ -316,7 +316,7 @@ export function AttendanceCalendar({
         <div className="grid grid-cols-7">
           {/* Empty cells before month start */}
           {Array.from({ length: startWeekday }).map((_, i) => (
-            <div key={`empty-${i}`} className="h-14 border-b border-r border-[#F3F4F6]" />
+            <div key={`empty-${i}`} className="min-h-14 border-b border-r border-[#F3F4F6]" />
           ))}
 
           {/* Days */}
@@ -337,11 +337,10 @@ export function AttendanceCalendar({
                 key={day}
                 onClick={() => canEdit && openDayModal(day)}
                 className={cn(
-                  "h-14 border-b border-r border-[#F3F4F6] p-1.5 flex flex-col transition-all",
+                  "min-h-14 border-b border-r border-[#F3F4F6] p-1.5 flex flex-col transition-all",
                   canEdit && "cursor-pointer hover:bg-[#F8FAFC]",
                   isWeekend && "bg-[#FAFBFC]",
-                  holidayName && !record && "bg-red-50/40",
-                  record && status !== "not_informed" && "bg-opacity-50"
+                  holidayName && "bg-red-50/30"
                 )}
               >
                 <div className="flex items-center justify-between">

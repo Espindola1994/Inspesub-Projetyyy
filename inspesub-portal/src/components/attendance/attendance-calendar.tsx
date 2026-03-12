@@ -36,6 +36,7 @@ const STATUS_CONFIG: Record<
   vacation: { label: "Férias", color: "text-pink-700", bg: "bg-pink-50 border-pink-200", dot: "bg-pink-500" },
   medical_leave: { label: "Atestado", color: "text-red-700", bg: "bg-red-50 border-red-200", dot: "bg-red-500" },
   justified_absence: { label: "Aus. Justificada", color: "text-orange-700", bg: "bg-orange-50 border-orange-200", dot: "bg-orange-500" },
+  hotel: { label: "Hotel", color: "text-teal-700", bg: "bg-teal-50 border-teal-200", dot: "bg-teal-500" },
   not_informed: { label: "Não informado", color: "text-[#9CA3AF]", bg: "bg-[#F9FAFB] border-[#E5E7EB]", dot: "bg-[#D1D5DB]" },
 }
 

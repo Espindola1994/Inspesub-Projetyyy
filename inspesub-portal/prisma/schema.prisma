@@ -37,6 +37,7 @@ enum AttendanceStatus {
   vacation
   medical_leave
   justified_absence
+  hotel
   not_informed
 }
 

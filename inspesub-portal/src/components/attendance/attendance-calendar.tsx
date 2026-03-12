@@ -316,7 +316,7 @@ export function AttendanceCalendar({
         <div className="grid grid-cols-7">
           {/* Empty cells before month start */}
           {Array.from({ length: startWeekday }).map((_, i) => (
-            <div key={`empty-${i}`} className="h-20 border-b border-r border-[#F3F4F6]" />
+            <div key={`empty-${i}`} className="h-14 border-b border-r border-[#F3F4F6]" />
           ))}
 
           {/* Days */}
@@ -337,7 +337,7 @@ export function AttendanceCalendar({
                 key={day}
                 onClick={() => canEdit && openDayModal(day)}
                 className={cn(
-                  "h-20 border-b border-r border-[#F3F4F6] p-2 flex flex-col transition-all",
+                  "h-14 border-b border-r border-[#F3F4F6] p-1.5 flex flex-col transition-all",
                   canEdit && "cursor-pointer hover:bg-[#F8FAFC]",
                   isWeekend && "bg-[#FAFBFC]",
                   holidayName && !record && "bg-red-50/40",
@@ -390,21 +390,17 @@ export function AttendanceCalendar({
       {/* Summary */}
       <div className="bg-white rounded-xl border border-[#E5E7EB] p-5">
         <h3 className="text-sm font-semibold text-[#1F2937] mb-4">Resumo do Mês</h3>
-        <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-3">
+        <div className="flex flex-wrap gap-2">
           {Object.entries(STATUS_CONFIG).filter(([status]) => status !== "not_informed").map(([status, config]) => (
-            <div key={status} className="text-center">
-              <div className={cn("w-full aspect-square rounded-lg border flex items-center justify-center mb-1 text-lg font-bold", config.bg, config.color)}>
-                {summary[status as AttendanceStatus] ?? 0}
-              </div>
-              <p className="text-xs text-[#6B7280] leading-tight mt-1">{config.label}</p>
+            <div key={status} className={cn("flex items-center gap-2 px-3 py-1.5 rounded-lg border", config.bg)}>
+              <span className={cn("text-sm font-bold", config.color)}>{summary[status as AttendanceStatus] ?? 0}</span>
+              <span className={cn("text-xs font-medium", config.color)}>{config.label}</span>
             </div>
           ))}
           {/* Feriados do mês */}
-          <div className="text-center">
-            <div className="w-full aspect-square rounded-lg border border-red-200 bg-red-50 flex items-center justify-center mb-1 text-lg font-bold text-red-600">
-              {holidaysThisMonth.length}
-            </div>
-            <p className="text-xs text-[#6B7280] leading-tight mt-1">Feriados</p>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-red-200 bg-red-50">
+            <span className="text-sm font-bold text-red-600">{holidaysThisMonth.length}</span>
+            <span className="text-xs font-medium text-red-600">Feriados</span>
           </div>
         </div>
 

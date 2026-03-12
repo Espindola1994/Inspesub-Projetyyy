@@ -28,16 +28,16 @@ const STATUS_CONFIG: Record<
   AttendanceStatus,
   { label: string; color: string; bg: string; dot: string }
 > = {
-  worked: { label: "Trabalhado", color: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200", dot: "bg-emerald-500" },
-  day_off: { label: "Folga", color: "text-[#6B7280]", bg: "bg-gray-50 border-gray-200", dot: "bg-gray-400" },
-  embarked: { label: "Embarcado", color: "text-[#0059A0]", bg: "bg-blue-50 border-blue-200", dot: "bg-[#0059A0]" },
-  disembarked: { label: "Desembarcado", color: "text-purple-700", bg: "bg-purple-50 border-purple-200", dot: "bg-purple-500" },
-  training: { label: "Treinamento", color: "text-amber-700", bg: "bg-amber-50 border-amber-200", dot: "bg-amber-500" },
-  vacation: { label: "Férias", color: "text-pink-700", bg: "bg-pink-50 border-pink-200", dot: "bg-pink-500" },
-  medical_leave: { label: "Atestado", color: "text-red-700", bg: "bg-red-50 border-red-200", dot: "bg-red-500" },
-  justified_absence: { label: "Aus. Justificada", color: "text-orange-700", bg: "bg-orange-50 border-orange-200", dot: "bg-orange-500" },
-  hotel: { label: "Hotel", color: "text-teal-700", bg: "bg-teal-50 border-teal-200", dot: "bg-teal-500" },
-  not_informed: { label: "Não informado", color: "text-[#9CA3AF]", bg: "bg-[#F9FAFB] border-[#E5E7EB]", dot: "bg-[#D1D5DB]" },
+  worked:            { label: "Trabalhado",     color: "text-[#0059A0]",  bg: "bg-[#EFF6FF] border-[#BFDBFE]", dot: "bg-[#0059A0]" },
+  day_off:           { label: "Folga",          color: "text-[#475569]",  bg: "bg-[#F1F5F9] border-[#CBD5E1]", dot: "bg-[#64748B]" },
+  embarked:          { label: "Embarcado",      color: "text-[#1E40AF]",  bg: "bg-[#EFF6FF] border-[#93C5FD]", dot: "bg-[#1E40AF]" },
+  disembarked:       { label: "Desembarcado",   color: "text-[#1E3A5F]",  bg: "bg-[#E8F0F9] border-[#93C5FD]", dot: "bg-[#1E3A5F]" },
+  training:          { label: "Treinamento",    color: "text-[#334155]",  bg: "bg-[#F1F5F9] border-[#94A3B8]", dot: "bg-[#334155]" },
+  vacation:          { label: "Férias",         color: "text-[#0369A1]",  bg: "bg-[#E0F2FE] border-[#7DD3FC]", dot: "bg-[#0369A1]" },
+  medical_leave:     { label: "Atestado",       color: "text-[#374151]",  bg: "bg-[#F8FAFC] border-[#94A3B8]", dot: "bg-[#6B7280]" },
+  justified_absence: { label: "Aus. Justificada", color: "text-[#1F4E87]", bg: "bg-[#DBEAFE] border-[#93C5FD]", dot: "bg-[#1F4E87]" },
+  hotel:             { label: "Hotel",          color: "text-[#0B7FC1]",  bg: "bg-[#E0F2FE] border-[#7DD3FC]", dot: "bg-[#0B7FC1]" },
+  not_informed:      { label: "Não informado",  color: "text-[#9CA3AF]",  bg: "bg-[#F9FAFB] border-[#E5E7EB]", dot: "bg-[#D1D5DB]" },
 }
 
 const WEEKDAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]

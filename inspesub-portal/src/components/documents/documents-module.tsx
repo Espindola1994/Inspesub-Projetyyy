@@ -17,6 +17,7 @@ type Document = {
   fileUrl: string
   fileName: string
   fileSize: number | null
+  mimeType: string | null
   issuedAt: string | null
   expiresAt: string | null
   isExpired: boolean
@@ -50,6 +51,7 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
   const [filterExpiring, setFilterExpiring] = useState(false)
   const [uploadOpen, setUploadOpen] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [previewDoc, setPreviewDoc] = useState<Document | null>(null)
   const [form, setForm] = useState({
     userId: currentUserId,
     title: "",
@@ -116,6 +118,18 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
     } finally {
       setUploading(false)
     }
+  }
+
+  async function handleDownload(doc: Document) {
+    const res = await fetch(`/api/documents/${doc.id}/download`)
+    if (!res.ok) { alert("Erro ao baixar arquivo"); return }
+    const blob = await res.blob()
+    const url = URL.createObjectURL(blob)
+    const a = window.document.createElement("a")
+    a.href = url
+    a.download = doc.fileName
+    a.click()
+    URL.revokeObjectURL(url)
   }
 
   function isExpiringSoon(expiresAt: string | null) {
@@ -195,14 +209,20 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
                   <div className="flex items-center gap-1">
                     {expired && <AlertTriangle className="w-4 h-4 text-red-500" />}
                     {expiringSoon && !expired && <AlertTriangle className="w-4 h-4 text-amber-500" />}
-                    <a href={doc.fileUrl} target="_blank" rel="noopener noreferrer"
-                      className="w-7 h-7 rounded-lg flex items-center justify-center text-[#0059A0] hover:bg-blue-50">
+                    <button
+                      onClick={() => setPreviewDoc(doc)}
+                      title="Pré-visualizar"
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-[#0059A0] hover:bg-blue-50 transition-colors"
+                    >
                       <Eye className="w-3.5 h-3.5" />
-                    </a>
-                    <a href={doc.fileUrl} download={doc.fileName}
-                      className="w-7 h-7 rounded-lg flex items-center justify-center text-[#6B7280] hover:bg-[#F5F8FB]">
+                    </button>
+                    <button
+                      onClick={() => handleDownload(doc)}
+                      title="Baixar"
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-[#6B7280] hover:bg-[#F5F8FB] transition-colors"
+                    >
                       <Download className="w-3.5 h-3.5" />
-                    </a>
+                    </button>
                   </div>
                 </div>
 
@@ -307,6 +327,63 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
           </div>
         </div>,
         document.body
+      )}
+      {/* PDF Preview Modal */}
+      {previewDoc && createPortal(
+        <div
+          className="fixed inset-0 z-[9999] flex flex-col bg-black/80"
+          onClick={() => setPreviewDoc(null)}
+        >
+          <div className="flex items-center justify-between px-5 py-3 bg-white border-b" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center gap-2">
+              <FileText className="w-4 h-4 text-[#0059A0]" />
+              <span className="text-sm font-semibold text-[#1F2937] truncate max-w-[60vw]">{previewDoc.title}</span>
+              <span className="text-xs text-[#9CA3AF]">{previewDoc.fileName}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleDownload(previewDoc)}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#0059A0] border border-[#0059A0] rounded-lg hover:bg-blue-50 transition-colors"
+              >
+                <Download className="w-3.5 h-3.5" /> Baixar
+              </button>
+              <button
+                onClick={() => setPreviewDoc(null)}
+                className="p-1.5 hover:bg-[#F5F8FB] rounded-lg transition-colors"
+              >
+                <X className="w-4 h-4 text-[#6B7280]" />
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 overflow-hidden" onClick={e => e.stopPropagation()}>
+            {previewDoc.mimeType === "application/pdf" || previewDoc.fileName.toLowerCase().endsWith(".pdf") ? (
+              <iframe
+                src={`/api/documents/${previewDoc.id}/preview`}
+                className="w-full h-full border-0"
+                title={previewDoc.title}
+              />
+            ) : previewDoc.mimeType?.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/i.test(previewDoc.fileName) ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={`/api/documents/${previewDoc.id}/preview`}
+                alt={previewDoc.title}
+                className="max-w-full max-h-full object-contain mx-auto mt-8"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full gap-4">
+                <FileText className="w-16 h-16 text-white/40" />
+                <p className="text-white/70 text-sm">Pré-visualização não disponível para este tipo de arquivo.</p>
+                <button
+                  onClick={() => handleDownload(previewDoc)}
+                  className="flex items-center gap-2 px-4 py-2 bg-[#0059A0] text-white text-sm rounded-lg hover:bg-[#1F4E87]"
+                >
+                  <Download className="w-4 h-4" /> Baixar arquivo
+                </button>
+              </div>
+            )}
+          </div>
+        </div>,
+        window.document.body
       )}
     </div>
   )

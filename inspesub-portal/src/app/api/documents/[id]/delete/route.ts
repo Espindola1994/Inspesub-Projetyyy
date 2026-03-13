@@ -29,6 +29,12 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    return NextResponse.json({ error: error.message || "Erro ao excluir documento." }, { status: 500 })
+    let errMsg = "Erro ao excluir documento."
+    if (error instanceof Error) {
+      errMsg = error.message
+    } else if (typeof error === "string") {
+      errMsg = error
+    }
+    return NextResponse.json({ error: errMsg }, { status: 500 })
   }
 }

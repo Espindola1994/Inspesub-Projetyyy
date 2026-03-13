@@ -53,6 +53,7 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
   const [uploading, setUploading] = useState(false)
   const [previewDoc, setPreviewDoc] = useState<Document | null>(null)
   const [form, setForm] = useState({
+
       const [errorMsg, setErrorMsg] = useState<string | null>(null)
     userId: currentUserId,
     title: "",

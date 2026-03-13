@@ -53,8 +53,6 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
   const [uploading, setUploading] = useState(false)
   const [previewDoc, setPreviewDoc] = useState<Document | null>(null)
   const [form, setForm] = useState({
-
-      const [errorMsg, setErrorMsg] = useState<string | null>(null)
     userId: currentUserId,
     title: "",
     description: "",
@@ -64,6 +62,7 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
     tags: "",
     file: null as File | null,
   })
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   const CATEGORY_CONFIG: Record<DocumentCategory, { label: string; color: string }> = {
     certificate: { label: t('doc_cat_certificate'), color: CATEGORY_COLORS.certificate },

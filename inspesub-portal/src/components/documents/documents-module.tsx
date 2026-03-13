@@ -53,6 +53,7 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
   const [uploading, setUploading] = useState(false)
   const [previewDoc, setPreviewDoc] = useState<Document | null>(null)
   const [form, setForm] = useState({
+      const [errorMsg, setErrorMsg] = useState<string | null>(null)
     userId: currentUserId,
     title: "",
     description: "",
@@ -96,6 +97,7 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
 
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault()
+    setErrorMsg(null)
     if (!form.file) return
     setUploading(true)
 
@@ -114,22 +116,36 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
       if (res.ok) {
         setUploadOpen(false)
         router.refresh()
+      } else {
+        const data = await res.json().catch(() => ({}))
+        setErrorMsg(data.error || "Erro ao salvar documento.")
       }
+    } catch (err) {
+      setErrorMsg("Erro de rede ao salvar documento.")
     } finally {
       setUploading(false)
     }
   }
 
   async function handleDownload(doc: Document) {
-    const res = await fetch(`/api/documents/${doc.id}/download`)
-    if (!res.ok) { alert("Erro ao baixar arquivo"); return }
-    const blob = await res.blob()
-    const url = URL.createObjectURL(blob)
-    const a = window.document.createElement("a")
-    a.href = url
-    a.download = doc.fileName
-    a.click()
-    URL.revokeObjectURL(url)
+    setErrorMsg(null)
+    try {
+      const res = await fetch(`/api/documents/${doc.id}/download`)
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setErrorMsg(data.error || "Erro ao baixar arquivo.")
+        return
+      }
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = window.document.createElement("a")
+      a.href = url
+      a.download = doc.fileName
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      setErrorMsg("Erro de rede ao baixar arquivo.")
+    }
   }
 
   function isExpiringSoon(expiresAt: string | null) {
@@ -265,6 +281,11 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
             </div>
 
             <div className="flex-1 overflow-y-auto min-h-0 p-6 pt-0">
+              {errorMsg && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                  {errorMsg}
+                </div>
+              )}
               <form id="doc-form" onSubmit={handleUpload} className="space-y-4">
                 {isAdmin && (
                   <div>
@@ -356,6 +377,11 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
             </div>
           </div>
           <div className="flex-1 overflow-hidden" onClick={e => e.stopPropagation()}>
+            {errorMsg && (
+              <div className="m-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                {errorMsg}
+              </div>
+            )}
             {previewDoc.mimeType === "application/pdf" || previewDoc.fileName.toLowerCase().endsWith(".pdf") ? (
               <iframe
                 src={`/api/documents/${previewDoc.id}/preview`}

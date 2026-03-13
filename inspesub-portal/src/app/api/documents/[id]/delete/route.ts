@@ -3,14 +3,17 @@ import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { createAdminClient } from "@/lib/supabase/server"
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const session = await auth()
     if (!session?.user) return NextResponse.json({ error: "Não autenticado" }, { status: 401 })
     if (session.user.role !== "admin_master") {
       return NextResponse.json({ error: "Permissão negada: apenas admin master pode excluir documentos." }, { status: 403 })
     }
-    const { id } = params
+    const { id } = await params
     const doc = await db.document.findUnique({ where: { id } })
     if (!doc) return NextResponse.json({ error: "Documento não encontrado" }, { status: 404 })
 

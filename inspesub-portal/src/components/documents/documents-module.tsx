@@ -369,6 +369,13 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
                 alt={previewDoc.title}
                 className="max-w-full max-h-full object-contain mx-auto mt-8"
               />
+            ) : previewDoc.mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || previewDoc.mimeType === "application/msword" || /\.(docx?|DOCX?)$/.test(previewDoc.fileName) ? (
+              <iframe
+                src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(window.location.origin + "/api/documents/" + previewDoc.id + "/download")}`}
+                className="w-full h-full border-0"
+                title={previewDoc.title}
+                allowFullScreen
+              />
             ) : (
               <div className="flex flex-col items-center justify-center h-full gap-4">
                 <FileText className="w-16 h-16 text-white/40" />

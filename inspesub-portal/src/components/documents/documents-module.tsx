@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
+import { createClient } from "@supabase/supabase-js"
 import { createPortal } from "react-dom"
 import { useRouter } from "next/navigation"
 import { formatDate } from "@/lib/utils"
-import { FolderOpen, Plus, Search, Filter, Eye, Download, AlertTriangle, X, FileText } from "lucide-react"
+import { FolderOpen, Plus, Search, Filter, Eye, Download, AlertTriangle, X, FileText, Trash2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { DocumentCategory } from "@prisma/client"
 import { useLanguage } from "@/components/providers/language-provider"
@@ -63,6 +64,24 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
     file: null as File | null,
   })
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+  async function handleDelete(docId: string) {
+    setDeletingId(docId)
+    setErrorMsg(null)
+    try {
+      const res = await fetch(`/api/documents/${docId}/delete`, { method: "DELETE" })
+      if (res.ok) {
+        router.refresh()
+      } else {
+        const data = await res.json().catch(() => ({}))
+        setErrorMsg(data.error || "Erro ao excluir documento.")
+      }
+    } catch (err) {
+      setErrorMsg("Erro de rede ao excluir documento.")
+    } finally {
+      setDeletingId(null)
+    }
+  }
 
   const CATEGORY_CONFIG: Record<DocumentCategory, { label: string; color: string }> = {
     certificate: { label: t('doc_cat_certificate'), color: CATEGORY_COLORS.certificate },
@@ -99,20 +118,69 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
     e.preventDefault()
     setErrorMsg(null)
     if (!form.file) return
+    // Validação de tamanho (20MB)
+    const MAX_SIZE = 20 * 1024 * 1024
+    if (form.file.size > MAX_SIZE) {
+      setErrorMsg("Arquivo muito grande (máx 20MB). Escolha um arquivo menor.")
+      return
+    }
     setUploading(true)
 
-    const fd = new FormData()
-    fd.append("file", form.file)
-    fd.append("userId", form.userId)
-    fd.append("title", form.title)
-    fd.append("description", form.description)
-    fd.append("category", form.category)
-    if (form.issuedAt) fd.append("issuedAt", form.issuedAt)
-    if (form.expiresAt) fd.append("expiresAt", form.expiresAt)
-    if (form.tags) fd.append("tags", form.tags)
+    // LOG: dados do submit
+    console.log("[DOCUMENTS_SUBMIT] Dados:", form)
 
+    // Upload direto no Supabase Storage
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    const supabase = createClient(supabaseUrl, supabaseKey)
+    const ext = form.file.name.split(".").pop()
+    const fileName = `documents/${form.userId}/${Date.now()}.${ext}`
+    const bucket = "portal-files"
+    let uploadResult, publicUrl
     try {
-      const res = await fetch("/api/documents", { method: "POST", body: fd })
+      uploadResult = await supabase.storage.from(bucket).upload(fileName, form.file, { contentType: form.file.type, upsert: false })
+      console.log("[DOCUMENTS_UPLOAD] Retorno upload:", uploadResult)
+      if (uploadResult.error) {
+        setErrorMsg("Falha ao enviar arquivo para o storage: " + uploadResult.error.message)
+        setUploading(false)
+        return
+      }
+      // Obter URL pública
+      const { data: urlData, error: urlError } = supabase.storage.from(bucket).getPublicUrl(fileName)
+      console.log("[DOCUMENTS_UPLOAD] Retorno getPublicUrl:", { urlData, urlError })
+      if (urlError) {
+        setErrorMsg("Falha ao obter URL pública do arquivo: " + urlError.message)
+        setUploading(false)
+        return
+      }
+      publicUrl = urlData.publicUrl
+    } catch (uploadErr) {
+      setErrorMsg("Erro inesperado ao enviar arquivo.")
+      setUploading(false)
+      return
+    }
+
+    // Enviar apenas metadados para a API
+    const payload = {
+      userId: form.userId,
+      title: form.title,
+      description: form.description,
+      category: form.category,
+      issuedAt: form.issuedAt,
+      expiresAt: form.expiresAt,
+      tags: form.tags,
+      fileUrl: publicUrl,
+      fileName: form.file.name,
+      fileSize: form.file.size,
+      mimeType: form.file.type,
+    }
+    console.log("[DOCUMENTS_SUBMIT] Payload metadados:", payload)
+    try {
+      const res = await fetch("/api/documents", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
       if (res.ok) {
         setUploadOpen(false)
         router.refresh()
@@ -239,6 +307,20 @@ export function DocumentsModule({ documents, isAdmin, employees, currentUserId }
                     >
                       <Download className="w-3.5 h-3.5" />
                     </button>
+                    {/* Botão de exclusão visível apenas para admin master */}
+                    {isAdmin && typeof window !== "undefined" && window.sessionStorage?.getItem("role") === "admin_master" && (
+                      <button
+                        onClick={() => handleDelete(doc.id)}
+                        title="Excluir documento"
+                        className={cn(
+                          "w-7 h-7 rounded-lg flex items-center justify-center text-red-600 hover:bg-red-50 transition-colors",
+                          deletingId === doc.id ? "opacity-60" : ""
+                        )}
+                        disabled={deletingId === doc.id}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
                 </div>
 
